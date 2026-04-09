@@ -135,7 +135,7 @@ body{
 .tb-tour:hover{background:var(--cobalt);color:#fff;border-color:var(--cobalt);}
 
 /* === BODY GRID === */
-.body{
+.app > .body{
   display:grid;
   grid-template-columns:240px 1fr;
   min-height:0;
@@ -215,9 +215,7 @@ body{
   padding:7px 0;
   font-size:12px;
   color:var(--text-2);
-  cursor:pointer;
 }
-.sys-item:hover{color:var(--text);}
 .sys-item .sd{
   width:7px;height:7px;border-radius:50%;
   background:var(--green);
@@ -884,87 +882,119 @@ body{
 /* === GUIDED TOUR OVERLAY === */
 .tour-backdrop{
   position:fixed;inset:0;
-  background:rgba(7,10,19,0.78);
-  backdrop-filter:blur(2px);
-  z-index:200;
+  background:transparent;
+  z-index:199;
   display:none;
-  pointer-events:auto;
+  pointer-events:none;
 }
 .tour-backdrop.active{display:block;}
-.tour-spotlight{
-  position:fixed;
-  border-radius:8px;
-  box-shadow:0 0 0 9999px rgba(7,10,19,0.78), 0 0 0 2px var(--cobalt-bright), 0 0 60px 0 rgba(127,149,255,0.3);
-  z-index:201;
-  pointer-events:none;
-  transition:all .5s cubic-bezier(.2,.9,.3,1);
-  display:none;
+.tour-spotlight{display:none !important;}
+
+/* Highlight class added to the target element being explained in each step.
+   Uses AMBER so it's visually distinct from the cobalt brand accents used
+   throughout the app. */
+.tour-highlight{
+  position:relative;
+  box-shadow:0 0 0 3px var(--amber), 0 0 0 8px rgba(245,158,11,0.25), 0 0 50px 0 rgba(245,158,11,0.4) !important;
+  border-radius:6px;
+  animation:tour-highlight-pulse 1.8s ease-in-out infinite;
+  z-index:50;
 }
-.tour-spotlight.active{display:block;}
+@keyframes tour-highlight-pulse{
+  0%, 100% { box-shadow:0 0 0 3px var(--amber), 0 0 0 8px rgba(245,158,11,0.25), 0 0 50px 0 rgba(245,158,11,0.4); }
+  50% { box-shadow:0 0 0 3px var(--amber), 0 0 0 14px rgba(245,158,11,0.35), 0 0 70px 0 rgba(245,158,11,0.6); }
+}
+
+/* Sidebar nav items are inside a container with overflow clipping, so outer
+   box-shadow glows get clipped at the sidebar edge. Use inset effects. */
+.nav-item.tour-highlight{
+  background:rgba(245, 158, 11, 0.35) !important;
+  box-shadow:inset 0 0 0 2px var(--amber), inset 0 0 30px rgba(245,158,11,0.4) !important;
+  color:#fff !important;
+  animation:tour-nav-highlight-pulse 1.8s ease-in-out infinite;
+}
+.nav-item.tour-highlight .ico,
+.nav-item.tour-highlight .count{
+  color:#fff !important;
+}
+.nav-item.tour-highlight .count{
+  background:rgba(255,255,255,0.15) !important;
+}
+@keyframes tour-nav-highlight-pulse{
+  0%, 100% {
+    background:rgba(245, 158, 11, 0.35);
+    box-shadow:inset 0 0 0 2px var(--amber), inset 0 0 30px rgba(245,158,11,0.35);
+  }
+  50% {
+    background:rgba(245, 158, 11, 0.5);
+    box-shadow:inset 0 0 0 2px #fff, inset 0 0 50px rgba(245,158,11,0.55);
+  }
+}
+
 .tour-card{
   position:fixed;
   z-index:202;
   background:var(--bg-2);
   border:1px solid var(--line-3);
+  border-left:4px solid var(--amber);
+  border-top:1px solid var(--amber);
   border-radius:8px;
-  padding:22px 24px;
-  width:380px;
-  box-shadow:0 30px 80px -20px rgba(0,0,0,0.7);
+  padding:20px 24px;
+  width:360px;
+  right:24px;
+  bottom:24px;
+  box-shadow:0 30px 80px -20px rgba(0,0,0,0.9), 0 0 0 1px rgba(245,158,11,0.25), 0 0 60px -10px rgba(245,158,11,0.3);
   display:none;
-  transition:all .5s cubic-bezier(.2,.9,.3,1);
+  flex-direction:column;
+  gap:12px;
 }
-.tour-card.active{display:block;}
+.tour-card.active{display:flex;}
 .tour-step{
   font-family:var(--fm);
   font-size:9px;
-  color:var(--cobalt-bright);
-  letter-spacing:0.18em;
+  color:var(--amber);
+  letter-spacing:0.2em;
   text-transform:uppercase;
-  margin-bottom:8px;
+  font-weight:500;
 }
 .tour-card h3{
   font-family:var(--fd);
-  font-size:22px;
+  font-size:20px;
   font-weight:500;
-  letter-spacing:-0.02em;
-  font-variation-settings:"opsz" 48;
+  letter-spacing:-0.015em;
+  font-variation-settings:"opsz" 32;
   line-height:1.2;
-  margin-bottom:10px;
+  color:var(--text);
+  margin:0;
 }
 .tour-card p{
   font-size:13px;
   color:var(--text-2);
   line-height:1.55;
-  margin-bottom:18px;
+  margin:0;
 }
 .tour-card p em{color:var(--cobalt-bright);font-style:normal;font-weight:500;}
+.tour-card p strong{color:var(--text);font-weight:500;}
 .tour-actions{
   display:flex;
-  justify-content:space-between;
+  justify-content:flex-end;
   align-items:center;
+  gap:10px;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+  margin-top:4px;
 }
-.tour-progress{
-  display:flex;
-  gap:5px;
-}
-.tour-progress span{
-  width:18px;
-  height:2px;
-  background:var(--line-2);
-  border-radius:1px;
-}
-.tour-progress span.done{background:var(--cobalt-bright);}
-.tour-btns{display:flex;gap:8px;}
+.tour-btns{display:flex;gap:10px;align-items:center;}
 .tour-skip{
   font-family:var(--fm);
   font-size:9px;
-  color:var(--text-3);
+  color:var(--text-4);
   background:none;
   border:none;
   cursor:pointer;
-  letter-spacing:0.1em;
+  letter-spacing:0.12em;
   text-transform:uppercase;
-  padding:6px 8px;
+  padding:8px 10px;
 }
 .tour-skip:hover{color:var(--text-2);}
 
@@ -1525,20 +1555,45 @@ body{
 /* === TENANT SWITCHER === */
 .tenant-switch{
   position:relative;
+  z-index:100;
 }
 @keyframes tenant-pulse {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgba(63, 95, 255, 0);
-    background: transparent;
+    box-shadow: 0 0 0 0 rgba(255, 176, 32, 0);
+    background: rgba(255, 176, 32, 0);
   }
   50% {
-    box-shadow: 0 0 0 6px rgba(63, 95, 255, 0.18);
-    background: rgba(63, 95, 255, 0.10);
+    box-shadow: 0 0 0 8px rgba(255, 176, 32, 0.28), 0 0 20px 4px rgba(255, 176, 32, 0.4);
+    background: rgba(255, 176, 32, 0.18);
   }
 }
 .tenant-switch-btn.pulse{
-  animation: tenant-pulse 1.6s ease-in-out infinite;
+  animation: tenant-pulse 1.4s ease-in-out infinite;
   border-radius:4px;
+  position:relative;
+}
+.tenant-switch-btn.pulse::after{
+  content:'click to switch tenants';
+  position:absolute;
+  top:calc(100% + 10px);
+  left:50%;
+  transform:translateX(-50%);
+  font-family:var(--fm);
+  font-size:9px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--amber);
+  white-space:nowrap;
+  padding:4px 10px;
+  background:rgba(255, 176, 32, 0.1);
+  border:1px solid rgba(255, 176, 32, 0.3);
+  border-radius:3px;
+  pointer-events:none;
+  animation:fade-in 0.6s ease-out 0.4s both;
+}
+@keyframes fade-in {
+  from { opacity:0; transform:translateX(-50%) translateY(-4px); }
+  to { opacity:1; transform:translateX(-50%) translateY(0); }
 }
 .tenant-switch-btn{
   display:flex;align-items:center;gap:8px;
@@ -1579,6 +1634,32 @@ body{
   overflow:hidden;
 }
 .tenant-menu.open{display:block;}
+.tenant-menu.open .tenant-opt{
+  animation: opt-reveal 0.5s ease-out backwards;
+}
+.tenant-menu.open .tenant-opt:nth-child(2){animation-delay:0.05s;}
+.tenant-menu.open .tenant-opt:nth-child(3){animation-delay:0.15s;}
+.tenant-menu.open .tenant-opt:nth-child(4){animation-delay:0.25s;}
+@keyframes opt-reveal {
+  0% {
+    opacity:0;
+    transform:translateX(-8px);
+    background:rgba(255, 176, 32, 0.12);
+  }
+  60% {
+    opacity:1;
+    transform:translateX(0);
+    background:rgba(255, 176, 32, 0.12);
+  }
+  100% {
+    opacity:1;
+    transform:translateX(0);
+    background:transparent;
+  }
+}
+.tenant-menu.open .tenant-opt.current{
+  animation:none;
+}
 .tenant-menu-h{
   font-family:var(--fm);
   font-size:9px;
@@ -2751,8 +2832,8 @@ body{
 }
 
 /* responsive */
-@media (max-width:1100px){
-  .body{grid-template-columns:1fr;}
+@media (max-width:820px){
+  .app > .body{grid-template-columns:1fr;}
   .sidebar{display:none;}
   .metrics{grid-template-columns:1fr 1fr;}
   .evidence{grid-template-columns:1fr;}
@@ -2766,6 +2847,36 @@ body{
   .merge-row{grid-template-columns:1fr 1fr;}
   .dcard-actions{flex-direction:column;align-items:flex-start;gap:12px;}
 }
+/* Narrow laptop windows: keep sidebar visible but tighten grids so content
+   doesn't break. This lets the demo work at 900-1100px browser widths where
+   investors often view it (half-screen windows, small laptops, etc). */
+@media (min-width:821px) and (max-width:1100px){
+  .metrics{grid-template-columns:1fr 1fr;}
+  .intel-grid{grid-template-columns:1fr;}
+  .evidence{grid-template-columns:1fr;}
+  .schema-wrap{grid-template-columns:1fr !important;gap:18px !important;}
+  .canonical{position:static !important;}
+  .verdict{grid-template-columns:1fr !important;}
+  .verdict-actions{flex-direction:row !important;}
+  .feed-stats{grid-template-columns:repeat(2,1fr) !important;}
+  .dq-summary{grid-template-columns:1fr !important;gap:16px !important;}
+  .dcard-evidence-grid{grid-template-columns:1fr !important;}
+}
+
+/* Universal overflow safety: prevent any view-content from being forced
+   wider than its container by long lines, fixed-width grids, or images. */
+.view-content{min-width:0;overflow-x:hidden;}
+.view{min-width:0;}
+.main{min-width:0;overflow-x:hidden;}
+
+/* Fullscreen views: hide the sidebar for the Guided Tour (focus on content,
+   no competing navigation) and the Investor FAQ (reading experience about
+   the business, workspace nav is noise). The .body grid collapses to a single
+   column when the sidebar is hidden so the main content spans full width. */
+body.tour-active .sidebar,
+body.fullscreen-view .sidebar{display:none !important;}
+body.tour-active .app > .body,
+body.fullscreen-view .app > .body{grid-template-columns:1fr !important;}
 @media (max-width:680px){
   .view-head{padding:18px 20px;flex-direction:column;gap:14px;align-items:flex-start;}
   .view-content{padding:18px 20px 40px;}
@@ -3512,6 +3623,464 @@ body{
   .riv-context{padding:28px 24px;}
 }
 
+/* ============================================================ */
+/* === DECISION VELOCITY BADGE on answer cards ================ */
+/* ============================================================ */
+.answer-velocity{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:7px 13px;
+  background:rgba(63,95,255,0.06);
+  border:1px solid rgba(63,95,255,0.22);
+  border-radius:4px;
+  font-size:11px;
+  color:var(--text-3);
+  margin:10px 0 14px;
+  font-family:var(--fm);
+  letter-spacing:0.02em;
+}
+.answer-velocity .vel-icon{
+  color:var(--cobalt-bright);
+  font-size:13px;
+  line-height:1;
+}
+.answer-velocity b{
+  color:var(--cobalt-bright);
+  font-weight:500;
+}
+.answer-velocity .vel-vs{
+  color:var(--text-5);
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:0.12em;
+}
+.answer-velocity .vel-without b{
+  color:var(--text-2);
+}
+
+/* ============================================================ */
+/* === EDITORIAL POLISH: Schema / Activity / Intel views ====== */
+/* ============================================================ */
+
+/* --- Schema view: canonical entity card refinement --- */
+#viewSchema .canonical{
+  background:linear-gradient(180deg, var(--bg-2), var(--bg-1)) !important;
+  border:1px solid var(--line) !important;
+  border-left:3px solid var(--cobalt-bright) !important;
+  border-radius:6px !important;
+  padding:32px 28px !important;
+}
+#viewSchema .canonical-h{
+  text-align:center;
+  margin-bottom:22px !important;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--line);
+}
+#viewSchema .canonical-h .lab{
+  font-family:var(--fm) !important;
+  font-size:10px !important;
+  letter-spacing:0.18em !important;
+  text-transform:uppercase !important;
+  color:var(--cobalt-bright) !important;
+  margin-bottom:10px !important;
+  font-weight:500 !important;
+}
+#viewSchema .canonical-h h3{
+  font-family:var(--fd) !important;
+  font-size:28px !important;
+  font-weight:400 !important;
+  letter-spacing:-0.022em !important;
+  font-variation-settings:"opsz" 48 !important;
+  line-height:1.1 !important;
+  color:var(--text) !important;
+  font-style:italic;
+}
+#viewSchema .src-card{
+  background:var(--bg-2) !important;
+  border:1px solid var(--line) !important;
+  border-radius:5px !important;
+  padding:18px 20px !important;
+  margin-bottom:14px !important;
+}
+#viewSchema .src-name{
+  font-family:var(--fm) !important;
+  font-size:11px !important;
+  letter-spacing:0.12em !important;
+  text-transform:uppercase !important;
+  color:var(--text-3) !important;
+  font-weight:500 !important;
+  padding-bottom:10px;
+  margin-bottom:10px;
+  border-bottom:1px solid var(--line);
+}
+#viewSchema .schema-side h4{
+  font-family:var(--fm) !important;
+  font-size:9px !important;
+  letter-spacing:0.16em !important;
+  text-transform:uppercase !important;
+  color:var(--text-4) !important;
+  font-weight:500 !important;
+  margin-bottom:14px !important;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--line);
+}
+
+/* --- Activity Feed view: more breathing room and typography refinement --- */
+#viewActivity .feed-stats{
+  margin-bottom:28px !important;
+  padding:24px 28px !important;
+  background:linear-gradient(180deg, var(--bg-2), var(--bg-1)) !important;
+  border:1px solid var(--line) !important;
+  border-left:3px solid var(--cobalt-bright) !important;
+  border-radius:6px !important;
+}
+#viewActivity .feed-stats .fs-lab{
+  font-family:var(--fm) !important;
+  font-size:9px !important;
+  letter-spacing:0.16em !important;
+  text-transform:uppercase !important;
+  color:var(--text-4) !important;
+  margin-bottom:8px !important;
+  font-weight:500 !important;
+}
+#viewActivity .feed-stats .fs-val{
+  font-family:var(--fd) !important;
+  font-size:32px !important;
+  font-weight:400 !important;
+  letter-spacing:-0.022em !important;
+  font-variation-settings:"opsz" 48 !important;
+  color:var(--text) !important;
+  line-height:1 !important;
+}
+#viewActivity .feed-stats .fs-val small{
+  font-size:11px !important;
+  color:var(--text-4) !important;
+  margin-left:8px;
+  font-family:var(--fb) !important;
+  font-weight:400 !important;
+  letter-spacing:0;
+}
+#viewActivity .feed{
+  background:var(--bg-2) !important;
+  border:1px solid var(--line) !important;
+  border-radius:6px !important;
+  overflow:hidden;
+}
+#viewActivity .feed-row{
+  padding:18px 24px !important;
+  border-bottom:1px solid var(--line) !important;
+  align-items:flex-start !important;
+}
+#viewActivity .feed-row:last-child{border-bottom:none !important;}
+#viewActivity .feed-row .when{
+  font-family:var(--fm) !important;
+  font-size:10px !important;
+  letter-spacing:0.04em !important;
+  color:var(--text-4) !important;
+  min-width:64px !important;
+}
+#viewActivity .feed-row .what{
+  line-height:1.55 !important;
+}
+#viewActivity .feed-row .what b{
+  font-family:var(--fb) !important;
+  font-size:13.5px !important;
+  font-weight:500 !important;
+  letter-spacing:-0.005em !important;
+}
+#viewActivity .feed-row .what small{
+  font-size:11.5px !important;
+  color:var(--text-3) !important;
+  display:block;
+  margin-top:4px;
+}
+
+/* --- Predictive Intelligence view: tighter card chrome, refined footer --- */
+#viewIntel .intel-card{
+  padding:30px 30px 26px !important;
+  background:linear-gradient(180deg, var(--bg-2), var(--bg-1)) !important;
+  border:1px solid var(--line) !important;
+  border-left:3px solid var(--cobalt-bright) !important;
+  border-radius:6px !important;
+}
+#viewIntel .intel-card::before{display:none;}
+#viewIntel .intel-card h3{
+  font-family:var(--fd) !important;
+  font-size:24px !important;
+  font-weight:400 !important;
+  letter-spacing:-0.022em !important;
+  font-variation-settings:"opsz" 48 !important;
+  line-height:1.18 !important;
+  margin-bottom:14px !important;
+  color:var(--text) !important;
+}
+#viewIntel .intel-card .body{
+  font-size:13.5px !important;
+  line-height:1.65 !important;
+  color:var(--text-2) !important;
+  margin-bottom:20px !important;
+}
+#viewIntel .intel-only{
+  font-family:var(--fm) !important;
+  font-size:9px !important;
+  letter-spacing:0.16em !important;
+  text-transform:uppercase !important;
+  color:var(--cobalt-bright) !important;
+  background:rgba(63,95,255,0.08) !important;
+  border:1px solid rgba(63,95,255,0.25) !important;
+  font-weight:500 !important;
+  margin-bottom:18px !important;
+}
+#viewIntel .intel-foot{
+  margin-top:20px !important;
+  padding-top:18px !important;
+  border-top:1px solid var(--line) !important;
+  display:flex !important;
+  justify-content:space-between !important;
+  align-items:center !important;
+}
+#viewIntel .intel-foot .meta{
+  font-family:var(--fm) !important;
+  font-size:10px !important;
+  letter-spacing:0.06em !important;
+  color:var(--text-4) !important;
+}
+#viewIntel .intel-foot .meta b{
+  color:var(--text-2) !important;
+  font-weight:500 !important;
+}
+
+/* ============================================================ */
+/* === COMPRESSION PASS: fit more content above the fold  ===== */
+/* ============================================================ */
+/* Reduces vertical padding/margins across view headers, metric
+   tiles, hero panels, and content containers so investors don't
+   have to scroll as aggressively to see each view's key content. */
+
+.view-head{
+  margin-bottom:22px !important;
+  padding-bottom:16px !important;
+}
+.view-title{
+  font-size:32px !important;
+  margin-bottom:6px !important;
+}
+.view-title::before{
+  margin-bottom:12px !important;
+}
+.view-sub{
+  font-size:12px !important;
+  line-height:1.5 !important;
+}
+.view-content{padding:16px 28px 40px !important;}
+.view-content[id]{padding-top:16px !important;}
+
+.metrics{
+  gap:14px !important;
+  margin-bottom:22px !important;
+}
+.metric{
+  padding:18px 22px 16px !important;
+}
+.metric .metric-trend{
+  margin-bottom:8px !important;
+}
+.metric .metric-val, .metric-val{
+  margin-bottom:6px !important;
+}
+
+/* Section headers between content blocks */
+.sec-h{
+  margin-bottom:14px !important;
+  margin-top:18px !important;
+}
+.sec-h:first-child{margin-top:0 !important;}
+
+/* Hero panels across views */
+.riv-context{
+  padding:22px 26px !important;
+  margin-bottom:22px !important;
+}
+.riv-context-head{margin-bottom:16px !important;}
+.riv-context-head h3{font-size:22px !important;margin-bottom:10px !important;}
+.riv-context-head p{font-size:12.5px !important;line-height:1.55 !important;}
+.riv-grid{gap:12px !important;}
+.riv-col{padding:14px 16px !important;}
+.riv-col h4{font-size:13px !important;margin-bottom:8px !important;}
+.riv-col ul{gap:4px !important;}
+.riv-col li{padding:4px 0 !important;font-size:11.5px !important;line-height:1.4 !important;}
+
+.ans-banner{
+  padding:20px 24px !important;
+  margin-bottom:18px !important;
+}
+.ans-banner h3{font-size:22px !important;margin-bottom:8px !important;}
+.ans-banner p{font-size:12.5px !important;line-height:1.55 !important;}
+
+.dq-banner{
+  padding:18px 22px !important;
+  margin-bottom:20px !important;
+}
+.dq-banner-l h3{font-size:20px !important;margin-bottom:6px !important;}
+.dq-banner-l p{font-size:12.5px !important;}
+
+.cs-hero{
+  padding:20px 24px !important;
+  margin-bottom:20px !important;
+}
+.cs-hero-title{font-size:22px !important;margin-bottom:8px !important;}
+.cs-hero-body{font-size:12.5px !important;line-height:1.55 !important;}
+
+.cmp-hero{
+  padding:22px 26px !important;
+  margin-bottom:20px !important;
+}
+.cmp-hero h2{font-size:22px !important;margin-bottom:8px !important;}
+.cmp-hero p{font-size:12.5px !important;line-height:1.55 !important;}
+.cmp-hero-num{font-size:44px !important;}
+
+/* Answer cards */
+.answer-card{margin-bottom:12px !important;}
+.answer-row{padding:16px 20px !important;}
+.answer-q{font-size:17px !important;margin-bottom:6px !important;}
+.answer-summary{font-size:12.5px !important;line-height:1.5 !important;margin-bottom:8px !important;}
+.answer-velocity{padding:5px 11px !important;margin:6px 0 10px !important;}
+.answer-meta{font-size:10px !important;}
+
+/* Insight cards */
+.icard{padding:16px 20px !important;margin-bottom:10px !important;}
+.ic-tag{margin-bottom:6px !important;font-size:9px !important;}
+.ic-body{font-size:12.5px !important;line-height:1.55 !important;}
+
+/* Intel cards */
+#viewIntel .intel-card{padding:22px 24px 20px !important;}
+#viewIntel .intel-card h3{font-size:20px !important;margin-bottom:10px !important;}
+#viewIntel .intel-card .body{font-size:12.5px !important;line-height:1.55 !important;margin-bottom:14px !important;}
+.intel-grid{gap:14px !important;}
+
+/* Schema view */
+#viewSchema .canonical{padding:22px 24px !important;}
+#viewSchema .canonical-h{margin-bottom:16px !important;padding-bottom:12px !important;}
+#viewSchema .canonical-h h3{font-size:22px !important;}
+#viewSchema .src-card{padding:12px 14px !important;margin-bottom:10px !important;}
+
+/* Activity feed */
+#viewActivity .feed-stats{padding:16px 22px !important;margin-bottom:18px !important;}
+#viewActivity .feed-stats .fs-val{font-size:24px !important;}
+#viewActivity .feed-row{padding:12px 20px !important;}
+
+/* FAQ items */
+.faq-item{padding:18px 22px !important;margin-bottom:12px !important;}
+.faq-q{font-size:15px !important;margin-bottom:8px !important;}
+.faq-a{font-size:12.5px !important;line-height:1.6 !important;}
+
+/* ============================================================ */
+/* === DEMO TOAST + VIEW HELP POPOVER ========================= */
+/* ============================================================ */
+.demo-toast{
+  position:fixed;
+  bottom:32px;
+  left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:var(--bg-2);
+  border:1px solid var(--cobalt-line);
+  border-left:3px solid var(--cobalt-bright);
+  border-radius:6px;
+  padding:14px 22px;
+  font-family:var(--fb);
+  font-size:13px;
+  color:var(--text);
+  box-shadow:0 20px 60px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(59,93,255,0.1);
+  z-index:500;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.3s ease, transform 0.3s ease;
+  max-width:480px;
+}
+.demo-toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+.demo-toast b{color:var(--cobalt-bright);font-family:var(--fm);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;display:block;margin-bottom:4px;}
+
+.help-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:transparent;
+  border:1px solid var(--line-2);
+  color:var(--text-3);
+  font-family:var(--fm);
+  font-size:11px;
+  font-weight:500;
+  cursor:pointer;
+  margin-left:12px;
+  vertical-align:middle;
+  transition:all 0.15s;
+  padding:0;
+  line-height:1;
+}
+.help-btn:hover{
+  border-color:var(--cobalt-bright);
+  color:var(--cobalt-bright);
+  background:var(--cobalt-soft);
+}
+
+.help-popover{
+  position:fixed;
+  background:var(--bg-2);
+  border:1px solid var(--cobalt-line);
+  border-radius:8px;
+  padding:20px 24px;
+  max-width:440px;
+  box-shadow:0 20px 60px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(59,93,255,0.1);
+  z-index:400;
+  display:none;
+  font-family:var(--fb);
+}
+.help-popover.show{display:block;}
+.help-popover .lab{
+  font-family:var(--fm);
+  font-size:9px;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--cobalt-bright);
+  margin-bottom:8px;
+}
+.help-popover h4{
+  font-family:var(--fd);
+  font-size:18px;
+  font-weight:500;
+  letter-spacing:-0.02em;
+  margin-bottom:10px;
+  color:var(--text);
+}
+.help-popover p{
+  font-size:13px;
+  line-height:1.6;
+  color:var(--text-2);
+  margin-bottom:10px;
+}
+.help-popover p:last-child{margin-bottom:0;}
+.help-popover p b{color:var(--text);font-weight:500;}
+.help-popover .close{
+  position:absolute;
+  top:10px;
+  right:12px;
+  background:transparent;
+  border:none;
+  color:var(--text-4);
+  font-size:18px;
+  cursor:pointer;
+  line-height:1;
+  padding:4px 8px;
+}
+.help-popover .close:hover{color:var(--text);}
+
 </style>
 </head>
 <body>
@@ -3519,7 +4088,7 @@ body{
 <!-- ============ WELCOME MODAL ============ -->
 <div class="welcome" id="welcome">
   <div class="welcome-card">
-    <div class="lab">AegenSynq Live Demo</div>
+    <div class="lab">AegenSynq Demo</div>
     <h1>Clean data. <em>Clear decisions.</em></h1>
     <p>
       AegenSynq searches every connected system, <strong>confirms or refutes what someone entered manually</strong>, and delivers the answer back into the tool the leader was already using. Leaders never log into AegenSynq — <strong>answers go where the work already happens.</strong> Cleaning the data is what makes the answers trustworthy.
@@ -3541,7 +4110,7 @@ body{
 
   <!-- TOPBAR -->
   <div class="topbar">
-    <div class="brand">aegen<em>synq</em></div>
+    <div class="brand">Aegen<em>Synq</em></div>
     <div class="tb-divider"></div>
     <div class="tenant-switch">
       <button class="tenant-switch-btn pulse" id="tenantBtn" onclick="toggleTenantMenu(event)">
@@ -3554,28 +4123,28 @@ body{
         <div class="tenant-opt" data-tenant="meridian" onclick="applyTenant('meridian')">
           <div>
             <div class="name">Meridian Global Industries</div>
-            <div class="desc">Manufacturing & logistics conglomerate · 28 of 310 SaaS connected · cross-BU complexity</div>
+            <div class="desc">Manufacturing & logistics conglomerate · 85 of 340 systems · 4 business units · cross-BU complexity</div>
           </div>
-          <div class="meta"><b>Enterprise</b>4,800 employees<br>14.2M records</div>
+          <div class="meta"><b>Enterprise</b>8,500 employees<br>65M records</div>
         </div>
         <div class="tenant-opt current" data-tenant="northwind" onclick="applyTenant('northwind')">
           <div>
             <div class="name">Northwind Logistics</div>
-            <div class="desc">Modern mid-market SaaS stack · 12 of 95 SaaS connected · classic data fragmentation</div>
+            <div class="desc">Modern mid-market SaaS stack · 22 of 145 systems · classic data fragmentation</div>
           </div>
-          <div class="meta"><b>Mid-Market</b>240 employees<br>285K records</div>
+          <div class="meta"><b>Mid-Market</b>480 employees<br>1.4M records</div>
         </div>
         <div class="tenant-opt" data-tenant="riverside" onclick="applyTenant('riverside')">
           <div>
             <div class="name">Riverside County Health Services</div>
-            <div class="desc">Public health agency · 9 of 48 systems connected · paper + legacy + Tyler ERP · Phase 0</div>
+            <div class="desc">Public health agency · 14 of 72 systems · paper + Oracle 11g + Tyler ERP · Digitization phase</div>
           </div>
-          <div class="meta"><b>Government</b>1,200 employees<br>384K records</div>
+          <div class="meta"><b>Government</b>1,200 employees<br>580K records</div>
         </div>
       </div>
     </div>
     <div class="tb-meta">
-      <div class="tb-status"><span class="dot"></span>Sync OK · 4m ago</div>
+      <div class="tb-status"><span class="dot"></span>Sync Successful · <span id="tbSync">4m ago</span></div>
       <button class="tb-help" onclick="openGlossary()" title="Glossary">?</button>
       <button class="tb-tour" onclick="startTour()">▶ Guided Tour</button>
     </div>
@@ -3610,11 +4179,6 @@ body{
           <span class="ico"><svg viewBox="0 0 14 14" fill="none"><path d="M2 11V5M5 11V3M8 11V7M11 11V4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
           Cost Savings
         </div>
-        <div class="nav-item" data-view="conflict" id="navConflict">
-          <span class="ico"><svg viewBox="0 0 14 14" fill="none"><path d="M7 1l6 11H1L7 1z" stroke="currentColor" stroke-width="1.2"/><path d="M7 5v3M7 10v0.5" stroke="currentColor" stroke-width="1.2"/></svg></span>
-          Project Atlas
-          <span class="count">!</span>
-        </div>
         <div class="nav-item" data-view="schema" id="navSchema">
           <span class="ico"><svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2" stroke="currentColor" stroke-width="1.2"/><circle cx="2" cy="2" r="1.2" stroke="currentColor" stroke-width="1.2"/><circle cx="12" cy="2" r="1.2" stroke="currentColor" stroke-width="1.2"/><circle cx="2" cy="12" r="1.2" stroke="currentColor" stroke-width="1.2"/><circle cx="12" cy="12" r="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 3l3 3M11 3L8 6M3 11l3-3M11 11L8 8" stroke="currentColor" stroke-width="1"/></svg></span>
           Canonical Schema
@@ -3623,18 +4187,6 @@ body{
           <span class="ico"><svg viewBox="0 0 14 14" fill="none"><path d="M1 7h3l2-5 2 10 2-5h3" stroke="currentColor" stroke-width="1.2"/></svg></span>
           Activity Feed
           <span class="count">24</span>
-        </div>
-      </div>
-
-      <div class="side-section">
-        <div class="side-h">Investor Context</div>
-        <div class="nav-item" data-view="competitive" id="navCompetitive">
-          <span class="ico"><svg viewBox="0 0 14 14" fill="none"><path d="M2 12V6M5 12V3M8 12V8M11 12V5M1 12h12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
-          Competitive Position
-        </div>
-        <div class="nav-item" data-view="faq" id="navFaq">
-          <span class="ico"><svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M5 5.5C5 4 6 3 7 3s2 1 2 2.2c0 1.2-2 1.5-2 2.8M7 10v.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
-          Investor FAQ
         </div>
       </div>
 
@@ -3667,10 +4219,10 @@ body{
       <div class="view active" id="viewOverview">
         <div class="view-head">
           <div>
-            <div class="view-title">Data Health · Overview</div>
+            <div class="view-title">Data Health · Overview <button class="help-btn" onclick="openHelp('overview')" title="What is this view?">?</button></div>
           <div class="view-sub" id="ovSub">Cross-system intelligence layer · <b>Northwind Logistics</b></div>
           </div>
-          <button class="btn btn-pri" id="scanBtn">▶ Run Scan</button>
+          <button class="btn btn-pri" id="scanBtn">Run Scan</button>
         </div>
 
         <div class="view-content">
@@ -3716,8 +4268,8 @@ body{
           <div class="riv-context" id="northwindContext" style="display:none">
             <div class="riv-context-head">
               <div class="riv-context-label">— Mid-market velocity · Northwind Logistics —</div>
-              <h3>How Northwind went from <em>fragmented</em> to clear in 2 weeks.</h3>
-              <p>Northwind is the mid-market tenant in this demo because it represents the segment already on modern SaaS but drowning in cross-tool fragmentation. Before AegenSynq, Maya Chen (CFO) had 22 connected SaaS systems out of 145 in the stack, status updates that did not match across tools, and vendor sprawl no one was tracking. The intelligence shown above and the answers the platform delivers below were standing up <strong>14 days after kickoff.</strong> This is what mid-market velocity looks like — no Phase 0 required, just connect, clean, and run.</p>
+              <h3>How Northwind went from <em>fragmented</em> to clear in 4 weeks.</h3>
+              <p>Northwind is the mid-market tenant in this demo because it represents the segment already on modern SaaS but drowning in cross-tool fragmentation. Before AegenSynq, Maya Chen (CFO) had 22 connected SaaS systems out of 145 in the stack, status updates that did not match across tools, and vendor sprawl no one was tracking. The intelligence shown above and the answers the platform delivers below were standing up <strong>4 weeks after kickoff.</strong> This is what mid-market velocity looks like — no digitization step required, just connect, clean, and run.</p>
             </div>
             <div class="riv-grid">
               <div class="riv-col before">
@@ -3734,7 +4286,7 @@ body{
                 </ul>
               </div>
               <div class="riv-col phase0">
-                <div class="riv-col-label">Phase 1 · Onboarding · 14 days</div>
+                <div class="riv-col-label">Onboarding · 4 weeks</div>
                 <h4>What AegenSynq deployed</h4>
                 <ul>
                   <li>22 systems connected via MCP</li>
@@ -3747,7 +4299,7 @@ body{
                 </ul>
               </div>
               <div class="riv-col phase1">
-                <div class="riv-col-label">Phase 1 · Intelligence · Active now</div>
+                <div class="riv-col-label">Intelligence · Active now</div>
                 <h4>What leadership gets today</h4>
                 <ul>
                   <li><strong>$480K/yr leakage</strong> surfaced · $54K platform cost</li>
@@ -3765,8 +4317,8 @@ body{
           <div class="riv-context" id="meridianContext" style="display:none">
             <div class="riv-context-head">
               <div class="riv-context-label">— Enterprise complexity · Meridian Global Industries —</div>
-              <h3>How Meridian unified <em>4 BUs and a recent acquisition</em> in 4 weeks.</h3>
-              <p>Meridian is the enterprise tenant in this demo because it represents the multi-BU complexity that platform AI vendors structurally cannot solve. Each of Meridian's four business units (BU-East, BU-West, BU-Henderson from the recent acquisition, BU-Central) ran its own SaaS contracts, its own Jira and Salesforce instances, its own Datadog purchases. No one had a cross-BU view. AegenSynq gave Linda Acharya (CFO) <strong>one canonical model across all four BUs — including the Henderson M&amp;A integration — in 4 weeks.</strong></p>
+              <h3>How Meridian unified <em>4 BUs and a recent acquisition</em> in 8 weeks.</h3>
+              <p>Meridian is the enterprise tenant in this demo because it represents the multi-BU complexity that platform AI vendors structurally cannot solve. Each of Meridian's four business units (BU-East, BU-West, BU-Henderson from the recent acquisition, BU-Central) ran its own SaaS contracts, its own Jira and Salesforce instances, its own Datadog purchases. No one had a cross-BU view. AegenSynq gave Linda Acharya (CFO) <strong>one canonical model across all four BUs — including the Henderson M&amp;A integration — in 8 weeks.</strong></p>
             </div>
             <div class="riv-grid">
               <div class="riv-col before">
@@ -3783,7 +4335,7 @@ body{
                 </ul>
               </div>
               <div class="riv-col phase0">
-                <div class="riv-col-label">Phase 1 · Onboarding · 4 weeks</div>
+                <div class="riv-col-label">Onboarding · 8 weeks</div>
                 <h4>What AegenSynq deployed</h4>
                 <ul>
                   <li>85 systems unified across all 4 BUs</li>
@@ -3796,7 +4348,7 @@ body{
                 </ul>
               </div>
               <div class="riv-col phase1">
-                <div class="riv-col-label">Phase 1 · Intelligence · Active now</div>
+                <div class="riv-col-label">Intelligence · Active now</div>
                 <h4>What leadership gets today</h4>
                 <ul>
                   <li><strong>$4.2M/yr leakage</strong> surfaced · $480K platform cost</li>
@@ -3814,8 +4366,8 @@ body{
           <div class="riv-context" id="riversideContext" style="display:none">
             <div class="riv-context-head">
               <div class="riv-context-label">— Government modernization · Riverside County Health Services —</div>
-              <h3>How Riverside got from <em>paper</em> to intelligence in 12 weeks.</h3>
-              <p>Riverside is the government tenant in this demo precisely because it represents the <strong>forced digitization</strong> market the brief calls out. Before AegenSynq, Riverside ran a 1990s data stack — paper intake, Oracle 11g without an API, Tyler Munis ERP, and three department-level Excel grant trackers. There was no canonical patient ID. The cross-system intelligence shown above and the answers the platform delivers below are only possible <strong>because Phase 0 was the digitization itself.</strong> This is what differentiates AegenSynq from SaaS-on-SaaS overlays — it can bring legacy organizations into the modern data world before running intelligence on top.</p>
+              <h3>How Riverside got from <em>paper</em> to intelligence in 16 weeks.</h3>
+              <p>Riverside is the government tenant in this demo precisely because it represents the <strong>forced digitization</strong> market the brief calls out. Before AegenSynq, Riverside ran a 1990s data stack — paper intake, Oracle 11g without an API, Tyler Munis ERP, and three department-level Excel grant trackers. There was no canonical patient ID. The cross-system intelligence shown above and the answers the platform delivers below are only possible <strong>because the digitization itself was the foundation.</strong> This is what differentiates AegenSynq from SaaS-on-SaaS overlays — it can bring legacy organizations into the modern data world before running intelligence on top.</p>
             </div>
             <div class="riv-grid">
               <div class="riv-col before">
@@ -3832,7 +4384,7 @@ body{
                 </ul>
               </div>
               <div class="riv-col phase0">
-                <div class="riv-col-label">Phase 0 · Digitization · 8 weeks</div>
+                <div class="riv-col-label">Digitization · 12 weeks</div>
                 <h4>What AegenSynq deployed</h4>
                 <ul>
                   <li>OCR pipeline · 1,840 weekly forms · <strong>96% confidence</strong></li>
@@ -3845,7 +4397,7 @@ body{
                 </ul>
               </div>
               <div class="riv-col phase1">
-                <div class="riv-col-label">Phase 1 · Intelligence · Active now</div>
+                <div class="riv-col-label">Intelligence · Active now</div>
                 <h4>What leadership gets today</h4>
                 <ul>
                   <li><strong>$310K/yr unbilled revenue</strong> surfaced from 142 visits</li>
@@ -3941,10 +4493,10 @@ body{
       <div class="view" id="viewAnswers">
         <div class="view-head">
           <div>
-            <div class="view-title">Answers</div>
+            <div class="view-title">Answers <button class="help-btn" onclick="openHelp('answers')" title="What is this view?">?</button></div>
             <div class="view-sub" id="ansSub">Leadership questions answered with cross-system evidence · <b>Northwind Logistics</b></div>
           </div>
-          <button class="btn btn-ghost">Filter</button>
+          <button class="btn btn-ghost" onclick="demoNote('Filter would let you narrow the feed by date, system, severity, or action type.')">Filter</button>
         </div>
         <div class="view-content" id="ansContent"></div>
       </div>
@@ -3953,7 +4505,7 @@ body{
       <div class="view" id="viewConflict">
         <div class="view-head">
           <div>
-            <div class="view-title">Project Atlas · Conflict Investigation</div>
+            <div class="view-title">Project Atlas · Conflict Investigation <button class="help-btn" onclick="openHelp('conflict')" title="What is this view?">?</button></div>
             <div class="view-sub" id="confSub">Cross-system evidence for <b>ATL-1142</b> · Initiative: Customer Portal Refresh · Owner: Maya Chen</div>
           </div>
           <button class="btn btn-ghost" onclick="goView('overview')">← Back</button>
@@ -3969,8 +4521,8 @@ body{
               </p>
             </div>
             <div class="verdict-actions">
-              <button class="btn btn-pri">Override Status</button>
-              <button class="btn btn-ghost">Notify Owner</button>
+              <button class="btn btn-pri" onclick="demoNote('Override Status would flip the project from On Track → At Risk in Jira, notify the owner, and log to the audit trail.')">Override Status</button>
+              <button class="btn btn-ghost" onclick="demoNote('Notify Owner would send a Slack DM to Maya Chen with the full evidence trail.')">Notify Owner</button>
             </div>
           </div>
 
@@ -4051,10 +4603,10 @@ body{
       <div class="view" id="viewSchema">
         <div class="view-head">
           <div>
-            <div class="view-title">Canonical Schema · Projects</div>
+            <div class="view-title"><span id="schemaTitleEl">Canonical Schema · Projects</span> <button class="help-btn" onclick="openHelp('schema')" title="What is this view?">?</button></div>
             <div class="view-sub" id="schemaSub">AI-mapped fields from 5 source systems into one normalized model · <b>94% avg confidence</b></div>
           </div>
-          <button class="btn btn-ghost">Edit Mapping</button>
+          <button class="btn btn-ghost" onclick="demoNote('Edit Mapping would open the schema mapper for adjusting field-to-canonical assignments. Changes route to the Decisions Queue for approval.')">Edit Mapping</button>
         </div>
 
         <div class="view-content">
@@ -4062,90 +4614,27 @@ body{
 
             <div class="schema-side" id="schemaLeft">
               <h4>← Sources In</h4>
-
-              <div class="src-card">
-                <div class="src-name"><span class="d"></span>Jira</div>
-                <div class="field">summary <span class="conf">98%</span></div>
-                <div class="field">status <span class="conf">94%</span></div>
-                <div class="field">assignee <span class="conf">96%</span></div>
-                <div class="field">duedate <span class="conf">99%</span></div>
-              </div>
-
-              <div class="src-card">
-                <div class="src-name"><span class="d"></span>Salesforce</div>
-                <div class="field">Opportunity.Name <span class="conf">92%</span></div>
-                <div class="field">Account.Name <span class="conf">99%</span></div>
-                <div class="field">Owner <span class="conf">96%</span></div>
-                <div class="field">CloseDate <span class="conf">98%</span></div>
-              </div>
-
-              <div class="src-card">
-                <div class="src-name"><span class="d"></span>Slack</div>
-                <div class="field">channel.name <span class="conf med">81%</span></div>
-                <div class="field">members <span class="conf">93%</span></div>
-              </div>
             </div>
 
             <div class="canonical">
               <div class="canonical-h">
                 <div class="lab">Canonical Entity</div>
-                <h3>Projects</h3>
+                <h3 id="canonicalEntityName">Projects</h3>
               </div>
-              <div class="canonical-fields">
-                <div class="cf"><span class="k">id</span><span class="typ">uuid</span></div>
-                <div class="cf"><span class="k">name</span><span class="typ">string</span></div>
-                <div class="cf"><span class="k">status</span><span class="typ">enum</span></div>
-                <div class="cf"><span class="k">owner_id</span><span class="typ">→people</span></div>
-                <div class="cf"><span class="k">client_id</span><span class="typ">→accounts</span></div>
-                <div class="cf"><span class="k">budget_id</span><span class="typ">→budgets</span></div>
-                <div class="cf"><span class="k">start_date</span><span class="typ">date</span></div>
-                <div class="cf"><span class="k">target_date</span><span class="typ">date</span></div>
-                <div class="cf"><span class="k">health_score</span><span class="typ">computed</span></div>
-                <div class="cf"><span class="k">version</span><span class="typ">int (audit)</span></div>
-              </div>
+              <div class="canonical-fields" id="canonicalFieldsEl"></div>
             </div>
 
             <div class="schema-side" id="schemaRight">
               <h4>Sources In →</h4>
-
-              <div class="src-card">
-                <div class="src-name"><span class="d"></span>NetSuite</div>
-                <div class="field">Project.Name <span class="conf">97%</span></div>
-                <div class="field">BudgetCode <span class="conf">95%</span></div>
-                <div class="field">PM <span class="conf med">87%</span></div>
-                <div class="field">Customer <span class="conf">99%</span></div>
-              </div>
-
-              <div class="src-card">
-                <div class="src-name"><span class="d"></span>Smartsheet</div>
-                <div class="field">Sheet.Title <span class="conf med">84%</span></div>
-                <div class="field">Owner <span class="conf">91%</span></div>
-                <div class="field">EndDate <span class="conf">93%</span></div>
-              </div>
-
-              <div class="src-card">
-                <div class="src-name"><span class="d"></span>GitHub</div>
-                <div class="field">repo.name <span class="conf med">79%</span></div>
-                <div class="field">topics[] <span class="conf med">82%</span></div>
-              </div>
             </div>
 
           </div>
 
           <div class="sec-h" style="margin-top:16px;">
-            <h3>Status Field · Value Harmonization</h3>
-            <div class="meta">5 source values → 1 canonical state</div>
+            <h3 id="harmonizationTitle">Status Field · Value Harmonization</h3>
+            <div class="meta" id="harmonizationMeta">5 source values → 1 canonical state</div>
           </div>
-          <div style="background:var(--bg-2);border:1px solid var(--line);border-radius:6px;padding:20px 24px;font-family:var(--fm);font-size:12px;color:var(--text-2);line-height:2;">
-            <div><span style="color:var(--text-4);">jira.status</span> "In Progress" &nbsp;<span style="color:var(--cobalt-bright);">→</span>&nbsp; <strong style="color:#fff;">active</strong></div>
-            <div><span style="color:var(--text-4);">salesforce.Stage</span> "in-progress" &nbsp;<span style="color:var(--cobalt-bright);">→</span>&nbsp; <strong style="color:#fff;">active</strong></div>
-            <div><span style="color:var(--text-4);">github.label</span> "WIP" &nbsp;<span style="color:var(--cobalt-bright);">→</span>&nbsp; <strong style="color:#fff;">active</strong></div>
-            <div><span style="color:var(--text-4);">smartsheet.Status</span> "Started" &nbsp;<span style="color:var(--cobalt-bright);">→</span>&nbsp; <strong style="color:#fff;">active</strong></div>
-            <div><span style="color:var(--text-4);">netsuite.ProjStatus</span> "Active" &nbsp;<span style="color:var(--cobalt-bright);">→</span>&nbsp; <strong style="color:#fff;">active</strong></div>
-            <div style="margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:11px;color:var(--text-3);">
-              Mapping learned from 3 human corrections · Confidence improving with every approval
-            </div>
-          </div>
+          <div id="harmonizationEl" style="background:var(--bg-2);border:1px solid var(--line);border-radius:6px;padding:20px 24px;font-family:var(--fm);font-size:12px;color:var(--text-2);line-height:2;"></div>
         </div>
       </div>
 
@@ -4153,10 +4642,10 @@ body{
       <div class="view" id="viewActivity">
         <div class="view-head">
           <div>
-            <div class="view-title">Activity Feed</div>
+            <div class="view-title">Activity Feed <button class="help-btn" onclick="openHelp('activity')" title="What is this view?">?</button></div>
             <div class="view-sub" id="actSub">Everything AegenSynq has done across <b>Northwind Logistics</b> in the last 7 days</div>
           </div>
-          <button class="btn btn-ghost">Filter</button>
+          <button class="btn btn-ghost" onclick="demoNote('Filter would let you narrow the feed by date, system, severity, or action type.')">Filter</button>
         </div>
 
         <div class="view-content">
@@ -4279,10 +4768,10 @@ body{
       <div class="view" id="viewDecisions">
         <div class="view-head">
           <div>
-            <div class="view-title">Decision Queue</div>
+            <div class="view-title">Decision Queue <button class="help-btn" onclick="openHelp('decisions')" title="What is this view?">?</button></div>
             <div class="view-sub" id="dxSub">Human-in-the-loop governance · Every AI action gated for review · <b>Northwind Logistics</b></div>
           </div>
-          <button class="btn btn-ghost">Configure Approvals</button>
+          <button class="btn btn-ghost" onclick="demoNote('Configure Approvals would let admins set who must approve which action types and at what confidence threshold.')">Configure Approvals</button>
         </div>
 
         <div class="view-content" id="dxContent">
@@ -4296,7 +4785,7 @@ body{
               <div class="value"><span>Est. Recovered</span><span>$84K + 4 risks</span></div>
               <div><span>Oldest Pending</span><span style="color:var(--text-2);">2d</span></div>
             </div>
-            <button class="btn btn-pri">Bulk Review</button>
+            <button class="btn btn-pri" onclick="demoNote('Bulk Review would let approvers move multiple decisions through approval at once with a shared rationale.')">Bulk Review</button>
           </div>
 
           <div class="filters">
@@ -4561,10 +5050,10 @@ body{
       <div class="view" id="viewIntel">
         <div class="view-head">
           <div>
-            <div class="view-title">Predictive Intelligence</div>
+            <div class="view-title">Predictive Intelligence <button class="help-btn" onclick="openHelp('intel')" title="What is this view?">?</button></div>
             <div class="view-sub" id="intelSub">Insights that <b>only exist</b> because data is normalized across all 5 systems · Refreshed every sync</div>
           </div>
-          <button class="btn btn-ghost">Export to PDF</button>
+          <button class="btn btn-ghost" onclick="demoNote('Export to PDF would generate a formatted Cost Savings report for sharing with the CFO or board.')">Export to PDF</button>
         </div>
 
         <div class="view-content">
@@ -4674,7 +5163,7 @@ body{
           </div>
 
           <div class="sec-h" style="margin-top:24px;">
-            <h3>Continuous Forecasts · Updated 4m ago</h3>
+            <h3>Continuous Forecasts · Updated <span id="intelForecastSync">4m ago</span></h3>
             <div class="meta">Recomputed every sync</div>
           </div>
 
@@ -4708,21 +5197,21 @@ body{
       <div class="view" id="viewSavings">
         <div class="view-head">
           <div>
-            <div class="view-title">Cost Savings · Annualized</div>
+            <div class="view-title">Cost Savings · Annualized <button class="help-btn" onclick="openHelp('savings')" title="What is this view?">?</button></div>
             <div class="view-sub" id="csSub">What AegenSynq pays back · Line item by line item</div>
           </div>
-          <button class="btn btn-ghost">Export to Finance</button>
+          <button class="btn btn-ghost" onclick="demoNote('Export to Finance would push the line items into NetSuite as an annotated savings report tied to the originating systems.')">Export to Finance</button>
         </div>
 
         <div class="view-content" id="csContent"></div>
       </div>
 
-      <!-- ============ VIEW: COMPETITIVE POSITION ============ -->
-      <div class="view" id="viewCompetitive">
+      <!-- ============ VIEW: INVESTOR FAQ ============ -->
+      <div class="view" id="viewFaq">
         <div class="view-head">
           <div>
-            <div class="view-title">Competitive Position</div>
-            <div class="view-sub">How AegenSynq compares to platform AI, general-purpose AI agents, and the build-it-yourself data warehouse path</div>
+            <div class="view-title">Investor Context <button class="help-btn" onclick="openHelp('faq')" title="What is this view?">?</button></div>
+            <div class="view-sub">Competitive position and the questions investors ask after they walk through the demo · sourced from the AegenSynq Business Partner Brief</div>
           </div>
         </div>
 
@@ -4883,45 +5372,14 @@ body{
             <span><span class="cmp-mark none">—</span> Not supported</span>
           </div>
 
-          <div class="sec-h"><h3>Why competitors structurally cannot catch up</h3><div class="meta">Three moats</div></div>
+          <div class="sec-h" style="margin-top:36px;"><h3>Frequently Asked Questions</h3><div class="meta">8 questions · sourced from the Business Partner Brief</div></div>
 
-          <div class="cmp-moats">
-            <div class="cmp-moat">
-              <div class="cmp-moat-num">01</div>
-              <h4>The versioned canonical model</h4>
-              <p>AegenSynq holds a persistent historical baseline of every record across every connected system. This is what enables the platform to say <em>"velocity dropped 22% since last sprint"</em> or <em>"three new risks emerged this week."</em> AI agents pulling raw data on demand cannot do this — they have no historical baseline to compare against. <strong>The versioned model is the foundation for change detection, anomaly flagging, and the compounding intelligence that improves with every cycle.</strong></p>
-            </div>
-            <div class="cmp-moat">
-              <div class="cmp-moat-num">02</div>
-              <h4>Bidirectional write-back with approval governance</h4>
-              <p>AegenSynq doesn't just read source systems — it cleans them in place, with human approval at every stage and an immutable audit trail. Platform AI vendors only write back within their own ecosystem (Salesforce Einstein cleans Salesforce, not Workday). General-purpose AI agents have no governance layer at all. <strong>AegenSynq is the only system designed to clean enterprise data at the source across every tool, with the audit trail enterprise buyers require.</strong></p>
-            </div>
-            <div class="cmp-moat">
-              <div class="cmp-moat-num">03</div>
-              <h4>Cross-platform reach by design</h4>
-              <p>Microsoft Copilot is structurally limited to the Microsoft ecosystem. Salesforce Einstein is structurally limited to Salesforce. Neither will ever clean the other's data because each is a competitor to the other. <strong>AegenSynq is built to operate across all of them — neutral, persistent, and bidirectional.</strong> This is the position no incumbent can take without abandoning their existing customer lock-in strategy.</p>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- ============ VIEW: INVESTOR FAQ ============ -->
-      <div class="view" id="viewFaq">
-        <div class="view-head">
-          <div>
-            <div class="view-title">Investor FAQ</div>
-            <div class="view-sub">The questions investors ask after they walk through the demo · sourced from the AegenSynq Business Partner Brief</div>
-          </div>
-        </div>
-
-        <div class="view-content">
           <div class="faq-list">
 
             <div class="faq-item">
               <div class="faq-q"><span class="num">Q1</span><span>How is AegenSynq differentiated?</span></div>
               <div class="faq-a">
-                Across 18 evaluated capabilities, <strong>AegenSynq scores 18/18.</strong> The next closest competitor scores <strong>4/18 with 6 partial.</strong> The full capability matrix is in the <em>Competitive Position</em> view. The short version: AegenSynq is the only platform that cleans data first, then runs persistent cross-system AI on the cleaned canonical model with bidirectional write-back to source systems and human-in-the-loop approval governance. Platform AI vendors (Microsoft Copilot, Salesforce Einstein) can clean their own ecosystem but cannot reach competitors' tools. General-purpose AI agents (ChatGPT, Claude, Zapier-based MCP setups) connect to systems but do not clean, do not persist, and lose context between sessions. Data warehouse stacks (Fivetran + Snowflake + dbt) move data without intelligence. AegenSynq is the only one that does all of it.
+                Across 18 evaluated capabilities, <strong>AegenSynq scores 18/18.</strong> The next closest competitor scores <strong>4/18 with 6 partial.</strong> The full capability matrix is above. The short version: AegenSynq is the only platform that cleans data first, then runs persistent cross-system AI on the cleaned canonical model with bidirectional write-back to source systems and human-in-the-loop approval governance. Platform AI vendors (Microsoft Copilot, Salesforce Einstein) can clean their own ecosystem but cannot reach competitors' tools. General-purpose AI agents (ChatGPT, Claude, Zapier-based MCP setups) connect to systems but do not clean, do not persist, and lose context between sessions. Data warehouse stacks (Fivetran + Snowflake + dbt) move data without intelligence. AegenSynq is the only one that does all of it.
               </div>
             </div>
 
@@ -4970,7 +5428,7 @@ body{
             <div class="faq-item">
               <div class="faq-q"><span class="num">Q8</span><span>What does the roadmap look like beyond MVP?</span></div>
               <div class="faq-a">
-                The <strong>MVP ships</strong> with 3–5 MCP integrations (Jira, Salesforce, Slack), the data cleanup and standardization layer, the human-in-the-loop approval workflows, the canonical model for projects, people, tasks, and budgets, and the initial set of cross-system intelligence cards. Through <strong>2026–2027</strong>, AegenSynq expands as MCP matures: additional canonical entities (Communications, Documents, Risks) come online sequentially. Phase 2 intelligence capabilities deepen with each customer interaction — risk models become more accurate, recommendations become more relevant, and the compounding intelligence makes the platform more valuable over time. <strong>AegenSynq's early MCP adoption</strong> positions it to absorb new MCP capabilities (enterprise auth, audit trails, governance features on the official roadmap) automatically rather than building them from scratch.
+                The <strong>MVP ships</strong> with 3–5 MCP integrations (Jira, Salesforce, Slack), the data cleanup and standardization layer, the human-in-the-loop approval workflows, the canonical model for projects, people, tasks, and budgets, and the initial set of cross-system intelligence cards. Through <strong>2026–2027</strong>, AegenSynq expands as MCP matures: additional canonical entities (Communications, Documents, Risks) come online sequentially. <strong>The intelligence layer deepens with each customer interaction</strong> — risk models become more accurate, recommendations become more relevant, and the compounding intelligence makes the platform more valuable over time. <strong>AegenSynq's early MCP adoption</strong> positions it to absorb new MCP capabilities (enterprise auth, audit trails, governance features on the official roadmap) automatically rather than building them from scratch.
               </div>
             </div>
 
@@ -4986,11 +5444,10 @@ body{
 <div class="tour-backdrop" id="tourBackdrop" onclick="endTour()"></div>
 <div class="tour-spotlight" id="tourSpotlight"></div>
 <div class="tour-card" id="tourCard">
-  <div class="tour-step" id="tourStep">Step 1 of 6</div>
-  <h3 id="tourTitle">Welcome to AegenSynq</h3>
-  <p id="tourBody">You're inside a working simulation of the AegenSynq platform.</p>
+  <div class="tour-step" id="tourStep">Step 1 of 14</div>
+  <h3 id="tourTitle">Inside AegenSynq</h3>
+  <p id="tourBody">Loading tour…</p>
   <div class="tour-actions">
-    <div class="tour-progress" id="tourProgress"></div>
     <div class="tour-btns">
       <button class="tour-skip" onclick="endTour()">Skip</button>
       <button class="btn btn-pri" id="tourNext" onclick="nextTour()">Next</button>
@@ -5086,14 +5543,33 @@ body{
   </div>
 </div>
 
+<!-- ============ DEMO TOAST ============ -->
+<div class="demo-toast" id="demoToast"><b>Demo Placeholder</b><span id="demoToastMsg">This action would run in production.</span></div>
+
+<!-- ============ HELP POPOVER ============ -->
+<div class="help-popover" id="helpPopover">
+  <button class="close" onclick="closeHelp()">×</button>
+  <div class="lab" id="helpPopoverLab">About this view</div>
+  <h4 id="helpPopoverTitle"></h4>
+  <div id="helpPopoverBody"></div>
+</div>
+
 <script>
 // === VIEW NAVIGATION ===
 function goView(name){
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('view' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
-  document.querySelector('.nav-item[data-view="'+name+'"]').classList.add('active');
+  const navItem = document.querySelector('.nav-item[data-view="'+name+'"]');
+  if (navItem) navItem.classList.add('active');
   document.querySelector('.main').scrollTop = 0;
+  // Fullscreen views (no sidebar): Investor FAQ is a reading experience about
+  // the business, not about navigating the workspace. Hide the sidebar there.
+  if (name === 'faq') {
+    document.body.classList.add('fullscreen-view');
+  } else {
+    document.body.classList.remove('fullscreen-view');
+  }
 }
 document.querySelectorAll('.nav-item').forEach(item => {
   item.addEventListener('click', () => goView(item.dataset.view));
@@ -5104,6 +5580,80 @@ function closeWelcome(){
   document.getElementById('welcome').classList.add('hidden');
 }
 
+// === DEMO TOAST ===
+// Lightweight toast that appears for 2.5s for any "demo placeholder" action.
+let demoToastTimer = null;
+function demoNote(msg){
+  const toast = document.getElementById('demoToast');
+  document.getElementById('demoToastMsg').textContent = msg || 'This action would run in production.';
+  toast.classList.add('show');
+  if (demoToastTimer) clearTimeout(demoToastTimer);
+  demoToastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+}
+
+// === VIEW HELP ===
+// Per-view explainer text shown when the user clicks the "?" button in any view header.
+const viewHelp = {
+  overview: {
+    title: 'Data Health · Overview',
+    body: '<p>This is the home view for each tenant. The four metric tiles show the <b>baseline reality</b> when you first arrive — data fragmented, conflicts unresolved, leakage uncalculated. Click <b>Run Scan</b> to watch the same numbers transform into <b>resolved value</b> as AegenSynq runs across all connected systems.</p><p>Below the tiles, the <b>customer journey panel</b> shows how this specific tenant onboarded (Before → Onboarding → Active intelligence). The cards below that are the actual <b>cross-system insights</b> AegenSynq surfaced — these are conflicts no single tool can see because they cross system boundaries.</p>'
+  },
+  answers: {
+    title: 'Answers',
+    body: '<p>This is what leaders actually experience. Five real questions asked in <b>Slack, email, or board prep docs</b> by people in different roles — never logging into AegenSynq itself. Each card shows the question, the verdict (confirmed/refuted/partial), the <b>decision velocity badge</b> (how fast AegenSynq answered vs how long it would have taken manually), and the systems searched.</p><p>Click any card to <b>expand the actual delivery</b> — the literal Slack message or email reply that landed in the leader\'s tool. The whole thesis: <b>answers go where the work already happens.</b></p>'
+  },
+  decisions: {
+    title: 'Decisions Queue',
+    body: '<p>The <b>governance moat</b>. Every action AegenSynq wants to take that affects source systems — status overrides, entity merges, schema mappings, retention archival — gets routed here for human approval first. Each card shows the proposed action, the evidence behind it, the systems affected, and what happens if approved vs declined.</p><p>This is what makes AegenSynq enterprise-ready: every AI action has a <b>human in the loop</b> and an <b>immutable audit trail</b>. Platform AI vendors and general-purpose agents do not have this layer.</p>'
+  },
+  intel: {
+    title: 'Predictive Intelligence',
+    body: '<p>Insights that <b>only exist</b> because data is normalized across all connected systems. These are not single-system metrics — each card represents a pattern AegenSynq detected by joining signals from 3-5 systems and recognizing what humans miss.</p><p>Examples: a project marked Green in Jira that\'s structurally at risk because of a hidden client SLA in Salesforce; engineers over-allocated across business units that each only see their own slice; a compliance gap detected by cross-referencing retention dates across NetSuite, Salesforce, and Workday. <b>Continuous forecasts</b> at the bottom show metrics AegenSynq is recomputing on every sync.</p>'
+  },
+  savings: {
+    title: 'Cost Savings',
+    body: '<p>This view answers the CFO question: <b>"What does this actually save us?"</b> The hero shows total annual recovery vs platform cost (the ROI multiplier). Below, every dollar is broken into <b>line items</b> sourced from specific cross-system actions — duplicate vendor consolidation, audit prep time avoided, compliance penalty risk eliminated, recovered revenue from billing gaps, etc.</p><p>Each line item is traceable to the systems and the actions that produced it. This is the audit trail finance teams need to defend the platform internally.</p>'
+  },
+  schema: {
+    title: 'Canonical Schema',
+    body: '<p>The <b>foundation everything else is built on</b>. AegenSynq ingests fields from every connected system on the left and right, then maps them into a single canonical entity in the middle (Projects for SaaS tenants, Patients for healthcare). Each field shows a <b>confidence score</b> — high-confidence mappings are auto-applied, lower-confidence ones route to the Decisions Queue.</p><p>The <b>Value Harmonization</b> section below shows how 5 different source values for the same conceptual field (e.g. Jira "In Progress" + Salesforce "in-progress" + GitHub "WIP") all collapse to a single canonical value (e.g. "active"). This is how cross-system queries become possible.</p>'
+  },
+  activity: {
+    title: 'Activity Feed',
+    body: '<p>Everything AegenSynq has done across this tenant in the last 7 days. Each row shows what happened, when, what system it affected, and a badge for the action type (Write-back, Conflict, Pattern Learning, Auto-action, etc.).</p><p>This is the <b>"compounding intelligence"</b> proof point — AegenSynq has memory between runs. It learns from every approval, every correction, every confirmed pattern. The activity feed shows that learning happening in real time. Competitors that pull raw data on demand cannot do this — they have no historical context.</p>'
+  },
+  conflict: {
+    title: 'Conflict Investigation',
+    body: '<p>The deep-dive view for a specific cross-system conflict. The verdict box at the top shows AegenSynq\'s conclusion (status + confidence). The <b>three evidence columns</b> below show the same project from three different systems\' perspectives — and how they disagree with each other.</p><p>The <b>detection timeline</b> at the bottom shows how AegenSynq surfaced the conflict over 14 days, from baseline through pattern reinforcement to crystallization. This is what an <b>audit-grade investigation trail</b> looks like — every signal, every system, every timestamp.</p>'
+  },
+  faq: {
+    title: 'Investor Context',
+    body: '<p>Two sections combined: the <b>competitive position</b> (18-capability matrix scoring AegenSynq vs platform AI, general-purpose AI agents, and the DIY warehouse stack) and the <b>investor FAQ</b> (8 questions investors ask after walking through this demo, sourced from the AegenSynq Business Partner Brief).</p><p>This view exists for investors and board members who need the business context — differentiation, market timing, cost vs DIY, the structural moat, the roadmap. Tenant-agnostic; the same content appears regardless of which tenant is selected.</p>'
+  }
+};
+function openHelp(viewName){
+  const help = viewHelp[viewName];
+  if (!help) return;
+  document.getElementById('helpPopoverTitle').textContent = help.title;
+  document.getElementById('helpPopoverBody').innerHTML = help.body;
+  const pop = document.getElementById('helpPopover');
+  pop.classList.add('show');
+  // Position centered
+  pop.style.top = '50%';
+  pop.style.left = '50%';
+  pop.style.transform = 'translate(-50%,-50%)';
+}
+function closeHelp(){
+  document.getElementById('helpPopover').classList.remove('show');
+}
+// Click outside to close
+document.addEventListener('click', (e) => {
+  const pop = document.getElementById('helpPopover');
+  if (pop && pop.classList.contains('show') && !pop.contains(e.target) && !e.target.classList.contains('help-btn')) {
+    closeHelp();
+  }
+});
+
 // === SCAN SIMULATION ===
 const scanBtn = document.getElementById('scanBtn');
 const scanBar = document.getElementById('scanBar');
@@ -5111,17 +5661,22 @@ const scanFill = document.getElementById('scanFill');
 const scanLabel = document.getElementById('scanLabel');
 const scanPct = document.getElementById('scanPct');
 
-const stages = [
-  {pct:8,  label:'Connecting to Jira via MCP server…'},
-  {pct:18, label:'Connecting to Salesforce via MCP server…'},
-  {pct:28, label:'Connecting to Slack, Smartsheet, NetSuite…'},
-  {pct:42, label:'Pulling 18,400 records into canonical schema…'},
-  {pct:56, label:'Running AI entity resolution across systems…'},
-  {pct:70, label:'Standardizing field names and status values…'},
-  {pct:84, label:'Detecting cross-system conflicts…'},
-  {pct:96, label:'Generating proactive insights…'},
-  {pct:100,label:'Scan complete · Health score updated'}
-];
+function buildScanStages(){
+  const t = TENANTS[currentTenant];
+  const recordCount = t.records || '1.4M';
+  const systemCount = t.systemCount || 22;
+  return [
+    {pct:8,  label:'Connecting to first system via MCP server…'},
+    {pct:18, label:`Connecting to ${systemCount} systems via MCP…`},
+    {pct:28, label:'Establishing OAuth and validating scopes…'},
+    {pct:42, label:`Pulling ${recordCount} records into canonical schema…`},
+    {pct:56, label:'Running AI entity resolution across systems…'},
+    {pct:70, label:'Standardizing field names and status values…'},
+    {pct:84, label:'Detecting cross-system conflicts…'},
+    {pct:96, label:'Generating proactive insights…'},
+    {pct:100,label:'Scan complete · Health score updated'}
+  ];
+}
 
 scanBtn.addEventListener('click', async () => {
   scanBtn.disabled = true;
@@ -5130,6 +5685,7 @@ scanBtn.addEventListener('click', async () => {
   document.querySelectorAll('.icard').forEach(c => c.classList.remove('show'));
   document.getElementById('insightCount').textContent = '0 active';
 
+  const stages = buildScanStages();
   for (const stage of stages) {
     scanLabel.textContent = stage.label;
     scanFill.style.width = stage.pct + '%';
@@ -5232,152 +5788,146 @@ const tourSteps = [
     target: '.brand',
     view: 'overview',
     title: 'Inside AegenSynq',
-    body: 'You\'re inside a working simulation of the AegenSynq platform — the intelligence layer that sits between your data and your leadership. Every screen here is what a real Phase 1 customer sees. <em>The tour takes about three minutes.</em>'
+    body: 'You\'re inside a working simulation of the AegenSynq platform. This is <em>Northwind Logistics</em>, a mid-market tenant. Takes about three minutes.'
   },
   {
     target: '.tenant-switch',
     view: 'overview',
-    title: 'Three tenants · Three customer archetypes',
-    body: 'AegenSynq serves three customer profiles: <em>mid-market</em> (Northwind, 480 employees, SaaS-native but fragmented), <em>enterprise</em> (Meridian, 8,500 employees, four BUs and a recent acquisition), and <em>government</em> (Riverside County Health, 1,200 employees, paper intake plus legacy systems). The same platform handles all three. Try the switcher after the tour.'
+    title: 'Three tenants · Three archetypes',
+    body: 'AegenSynq serves <em>mid-market</em>, <em>enterprise</em>, and <em>government</em> customers. Switch tenants after the tour to see how the same platform handles three very different data realities.'
   },
   {
     target: '#northwindContext',
     view: 'overview',
-    title: 'Customer journey · Phase 1 onboarding',
-    body: 'This panel tells the journey for each tenant — what they had before AegenSynq, what onboarding looked like, and what intelligence they get today. <em>Northwind onboarded in 14 days. Meridian unified four BUs and an acquisition in 4 weeks. Riverside got from paper to intelligence in 12 weeks.</em> Switch tenants after the tour to see all three customer journeys.'
+    title: 'Customer journey',
+    body: 'Three columns below: <em>Before AegenSynq</em>, <em>Onboarding work</em>, and <em>Active intelligence now</em>. Northwind onboarded in 4 weeks.'
   },
   {
     target: '#scanBtn',
     view: 'overview',
     title: 'Run a live scan',
-    body: 'Click <em>Run Scan</em> to watch the four metric tiles transform from your <em>baseline reality</em> — the records, conflicts, questions, and dollar leakage already sitting in your stack — into <em>resolved value</em> AegenSynq has surfaced and standardized at the source. <em>The numbers stay the same. The story changes.</em>'
+    body: 'Click <em>Run Scan</em> to watch the four metric tiles transform from <em>baseline reality</em> into <em>resolved value</em>. The numbers stay the same. The story changes.'
   },
   {
     target: '#ic1',
     view: 'overview',
-    title: 'The conflict no single AI sees',
-    body: 'Project Atlas: Jira says <em>"On Track."</em> NetSuite shows 80% of budget burned on 60% of work. GitHub shows velocity collapsing. <em>No single tool\'s AI can see this</em> — only a persistent layer that holds all five data models simultaneously and knows when they disagree.'
+    title: 'The conflict no AI sees',
+    body: 'Jira says <em>"On Track."</em> NetSuite shows 80% of budget burned on 60% of work. No single tool sees this conflict — only a layer that holds all five systems at once.'
   },
   {
-    target: '.dq-summary',
+    target: '.dq-banner',
     view: 'decisions',
-    title: 'Decision Queue · The governance moat',
-    body: 'Every AI action is gated for human approval. Status overrides, entity merges, schema mappings, compliance archives — all routed here with full evidence and an immutable audit trail. <em>1,247 duplicate contacts identified at 94% confidence, 23 edge cases routed for individual review.</em> AegenSynq doesn\'t move data without permission.'
+    title: 'The governance moat',
+    body: 'Every AI action is gated for human approval. Status overrides, entity merges, schema mappings — all routed here with full evidence and an immutable audit trail.'
   },
   {
-    target: '#viewIntel .intel-card:first-child',
+    target: '#intelGrid .intel-card',
     view: 'intel',
     title: 'Cross-system intelligence',
-    body: 'Project Helios depends on Atlas. Atlas has a hidden client SLA in Salesforce. Atlas is at risk. <em>Therefore Helios — currently marked Green — is structurally at risk through a chain that crosses three systems.</em> No single tool can see this. AegenSynq does, automatically, every cycle.'
+    body: 'Helios depends on Atlas. Atlas has a hidden client SLA. Helios is <em>structurally at risk</em> through a chain crossing three systems. No single tool sees this.'
   },
   {
-    target: '#navAnswers',
+    target: '.ans-banner',
     view: 'answers',
-    title: 'The headline use case · Leadership questions answered',
-    body: 'Leaders ask questions in <em>Slack, email, and dashboards</em> — they never log in here. AegenSynq searches every connected system, <em>confirms or refutes the human-entered status</em>, and delivers the answer back into the tool the leader was already using. Five real questions for this tenant.'
+    title: 'Leadership questions answered',
+    body: 'Leaders ask in <em>Slack, email, dashboards</em> — they never log in here. AegenSynq delivers answers back into the tool they\'re already using.'
   },
   {
-    target: '#viewAnswers .answer-card:first-child',
+    target: '#ans0',
     view: 'answers',
-    title: 'Click any answer · See the actual delivery',
-    body: 'The first question: <em>"Is the Customer Portal Refresh really on track for Q2?"</em> AegenSynq says <em>refuted</em> with 92% confidence. Click the card to expand the actual Slack message that landed in the VP\'s DMs. <em>No new interface for the leader to learn — answers go where the work already happens.</em>'
+    title: 'See the actual delivery',
+    body: 'Click any answer card to expand the <em>actual Slack message</em> that landed in the VP\'s DMs. Answers go where the work already happens.'
   },
   {
-    target: '.canonical',
+    target: '.canonical-h',
     view: 'schema',
     title: 'The canonical schema',
-    body: 'Every system\'s data is mapped through AI-assisted field mapping into one normalized model. Five sources for "status" — <em>"WIP," "in-progress," "Active"</em> — collapse into one canonical value. The platform learns from every human correction and writes cleaned values back to source systems with approval.'
+    body: 'Five sources for <em>"status"</em> — <em>"WIP," "in-progress," "Active"</em> — collapse into one canonical value. The platform learns from every human correction.'
   },
   {
-    target: '.feed',
+    target: '#actStats',
     view: 'activity',
-    title: 'Compounding intelligence · Activity feed',
-    body: 'Everything AegenSynq has done across the tenant in the last 7 days — cleaned, conflicted, learned, written back to source systems. <em>This is the difference from a one-shot AI agent.</em> Memory between runs. Patterns over time. Intelligence that compounds rather than resets.'
+    title: 'Compounding intelligence',
+    body: 'Everything AegenSynq has done in the last 7 days. <em>Memory between runs.</em> Intelligence that compounds rather than resets with every query.'
   },
   {
-    target: '#navSavings',
+    target: '.cs-hero',
     view: 'savings',
-    title: 'Cost Savings · ROI proven',
-    body: 'Every dollar of leakage AegenSynq pays back, line by line. <em>For Northwind, $480K/year recovered against $54K platform cost — 8.9× ROI.</em> Open the line items: SaaS license tier drops, employee hours saved, compliance avoidance, vendor consolidation. <em>This is the conversation a CFO actually wants to have.</em>'
+    title: 'ROI proven',
+    body: 'For Northwind, <em>$480K/year recovered</em> against $54K platform cost — <em>8.9× ROI</em>. Every dollar attributable to a line item below.'
   },
   {
-    target: '#navCompetitive',
-    view: 'competitive',
-    title: 'Competitive Position · The moat made visible',
-    body: 'Across <em>18 evaluated capabilities</em>, AegenSynq scores <em>18/18.</em> The next closest competitor — Microsoft Copilot, Salesforce Einstein — scores <em>4/18 with 6 partial.</em> ChatGPT and MCP-based agents score 0/18. DIY warehouses (Fivetran + Snowflake + dbt) score 2/18. <em>The moat is structural, not temporary.</em>'
-  },
-  {
-    target: '#navFaq',
+    target: '.cmp-hero',
     view: 'faq',
-    title: 'The rest of the story · Investor FAQ',
-    body: 'Eight questions investors typically ask after a demo: how AegenSynq is differentiated, why now, what it costs vs DIY, the Phase 1 → Phase 2 flywheel, market size, buyer profile, why competitors won\'t catch up, the roadmap. <em>All sourced directly from the brief.</em> The tour ends here — switch tenants from the top bar to see how the same platform handles drastically different data realities.'
+    title: 'The moat made visible',
+    body: 'Across <em>18 evaluated capabilities</em>, AegenSynq scores <em>18/18</em>. Next competitor scores 4/18. The moat is structural, not temporary.'
+  },
+  {
+    target: '#viewFaq .faq-item',
+    view: 'faq',
+    title: 'The rest of the story',
+    body: 'Eight investor questions follow — differentiation, timing, cost vs DIY, roadmap. Tour ends here. <em>Switch tenants to see Meridian and Riverside.</em>'
   }
 ];
 
 let tourIdx = 0;
 let tourActive = false;
 
+let currentHighlight = null;
+
 function startTour(){
   closeWelcome();
   applyTenant('northwind');
+  document.getElementById('tenantBtn').classList.remove('pulse');
   tourActive = true;
   tourIdx = 0;
+  document.body.classList.add('tour-active');
+  // Clear any stale inline positioning from earlier tour implementations
+  const card = document.getElementById('tourCard');
+  card.style.cssText = '';
   document.getElementById('tourBackdrop').classList.add('active');
   document.getElementById('tourCard').classList.add('active');
-  document.getElementById('tourSpotlight').classList.add('active');
   renderTour();
 }
 
 function renderTour(){
   const step = tourSteps[tourIdx];
-  goView(step.view);
-
-  // Render progress dots
-  const prog = document.getElementById('tourProgress');
-  prog.innerHTML = '';
-  for (let i=0; i<tourSteps.length; i++){
-    const s = document.createElement('span');
-    if (i <= tourIdx) s.classList.add('done');
-    prog.appendChild(s);
+  
+  // Clear previous highlight
+  if (currentHighlight) {
+    currentHighlight.classList.remove('tour-highlight');
+    currentHighlight = null;
   }
+  
+  goView(step.view);
 
   document.getElementById('tourStep').textContent = `Step ${tourIdx+1} of ${tourSteps.length}`;
   document.getElementById('tourTitle').textContent = step.title;
   document.getElementById('tourBody').innerHTML = step.body;
   document.getElementById('tourNext').textContent = (tourIdx === tourSteps.length-1) ? 'Done ✓' : 'Next →';
-
-  // Position spotlight on target
+  
+  // Highlight target after a brief delay (give the view time to render)
   setTimeout(() => {
+    if (!step.target) return;
     const el = document.querySelector(step.target);
     if (!el) return;
-    const r = el.getBoundingClientRect();
-    const pad = 8;
-    const sl = document.getElementById('tourSpotlight');
-    sl.style.left = (r.left - pad) + 'px';
-    sl.style.top = (r.top - pad) + 'px';
-    sl.style.width = (r.width + pad*2) + 'px';
-    sl.style.height = (r.height + pad*2) + 'px';
-
-    // Position card
-    const card = document.getElementById('tourCard');
-    const cw = 380;
-    const ch = card.offsetHeight || 220;
-    let cx = r.right + 24;
-    let cy = r.top;
-    if (cx + cw > window.innerWidth - 24){
-      cx = r.left - cw - 24;
+    
+    // Scroll target into view within its scroll container
+    const scroller = el.closest('.main, .sidebar');
+    if (scroller) {
+      const sRect = scroller.getBoundingClientRect();
+      const elRect = el.getBoundingClientRect();
+      const desiredOffset = 120;
+      const currentOffset = elRect.top - sRect.top;
+      if (currentOffset < desiredOffset || currentOffset > sRect.height - 200) {
+        scroller.scrollTop += (currentOffset - desiredOffset);
+      }
     }
-    if (cx < 24){
-      cx = Math.max(24, (window.innerWidth - cw) / 2);
-      cy = r.bottom + 24;
-    }
-    if (cy + ch > window.innerHeight - 24){
-      cy = window.innerHeight - ch - 24;
-    }
-    if (cy < 24) cy = 24;
-    card.style.left = cx + 'px';
-    card.style.top = cy + 'px';
-  }, 60);
+    
+    // Apply the cobalt highlight glow
+    el.classList.add('tour-highlight');
+    currentHighlight = el;
+  }, 120);
 }
 
 function nextTour(){
@@ -5391,9 +5941,16 @@ function nextTour(){
 
 function endTour(){
   tourActive = false;
+  document.body.classList.remove('tour-active');
+  // Clear any active highlight
+  if (currentHighlight) {
+    currentHighlight.classList.remove('tour-highlight');
+    currentHighlight = null;
+  }
   document.getElementById('tourBackdrop').classList.remove('active');
   document.getElementById('tourCard').classList.remove('active');
-  document.getElementById('tourSpotlight').classList.remove('active');
+  // Return to the Overview home view so the user lands where they started
+  goView('overview');
 }
 
 window.addEventListener('resize', () => {
@@ -5596,13 +6153,13 @@ const TENANTS = {
         asker:'Maya Chen', role:'VP Engineering', avatar:'MC',
         channel:'Slack DM', when:'2h ago',
         question:'Is the Customer Portal Refresh really on track for Q2?',
-        verdict:'refuted', confidence:92,
+        verdict:'refuted', confidence:92, tta:'1 min', ttaWithout:'3 weeks',
         summary:'Three independent systems contradict the <b>"Green / On Track"</b> status entered in Jira. Budget burn outpacing work complete by 20 points. Velocity down 22% over two sprints. Two critical blockers logged but not surfaced in the status report.',
         searched:['Jira','NetSuite','GitHub','Slack #atlas'],
         deepDive:true,
         delivery:{
           type:'slack',
-          channel:'aegensynq-bot · Direct message',
+          channel:'AegenSynq Bot · Direct message',
           name:'AegenSynq', time:'2:14 PM',
           body:'<strong>Re: Is the Customer Portal Refresh on track for Q2?</strong><br><br>Short answer: <em>No.</em> Three systems disagree with the "Green" status in Jira:<br><br>• <strong>NetSuite</strong>: 80% of budget spent on 60% of work · $400K projected overrun<br>• <strong>GitHub</strong>: velocity down 22% over 2 sprints · 7 stale PRs<br>• <strong>Slack #atlas</strong>: 14 "blocked" mentions in the last week<br><br>Confidence: <strong>92%</strong>. Want the full evidence trail? <strong>Open Atlas →</strong>'
         }
@@ -5611,7 +6168,7 @@ const TENANTS = {
         asker:'David Park', role:'CFO', avatar:'DP',
         channel:'Email reply', when:'4h ago',
         question:'What is our true Datadog spend across the company?',
-        verdict:'confirmed', confidence:99,
+        verdict:'confirmed', confidence:99, tta:'2 min', ttaWithout:'2 weeks',
         summary:'Found <b>3 separate Datadog accounts</b> across Engineering ($42K), DevOps ($28K), and Data Science ($14K). True annual spend: <b>$84K/yr</b>. Consolidating to one enterprise contract would save an estimated <b>$22K at next renewal.</b>',
         searched:['NetSuite AP','Coupa','Slack #ops-finance'],
         delivery:{
@@ -5626,7 +6183,7 @@ const TENANTS = {
         asker:'Priya Patel', role:'Head of People', avatar:'PP',
         channel:'Slack DM', when:'Yesterday',
         question:'What did Sarah Kim actually deliver in Q1?',
-        verdict:'confirmed', confidence:96,
+        verdict:'confirmed', confidence:96, tta:'2 min', ttaWithout:'1.5 weeks',
         summary:'<b>47 PRs merged</b> across 4 repos, <b>3 incident saves</b> tagged in PagerDuty, <b>2 unsolicited shoutouts</b> in Slack from senior engineers. Strong quarter, well above her cohort median (28 PRs). Recommend reviewing for promotion this cycle.',
         searched:['GitHub','PagerDuty','Slack','Workday'],
         delivery:{
@@ -5640,7 +6197,7 @@ const TENANTS = {
         asker:'Elena Vasquez', role:'CEO', avatar:'EV',
         channel:'Board prep doc', when:'Yesterday',
         question:'Are we still on track to hit Q2 revenue?',
-        verdict:'partial', confidence:78,
+        verdict:'partial', confidence:78, tta:'1 min', ttaWithout:'1 week',
         summary:'<b>$1.4M of the $2.1M target booked</b> (67%, on pace). However, <b>2 deals worth $340K stalled in legal review</b> for 14+ days (Acme, Globex). Without resolution this week, Q2 is at risk by ~$220K.',
         searched:['Salesforce','NetSuite billing','Slack #legal'],
         delivery:{
@@ -5655,7 +6212,7 @@ const TENANTS = {
         asker:'Jordan Lee', role:'PMO Lead', avatar:'JL',
         channel:'Slack reply', when:'3d ago',
         question:'Which of our 47 active projects do not map to Q2 strategy?',
-        verdict:'confirmed', confidence:88,
+        verdict:'confirmed', confidence:88, tta:'5 min', ttaWithout:'4 weeks',
         summary:'<b>3 projects flagged</b>: Phoenix (6% of capacity), Helios (3%), Beacon (2%). Combined: <b>11% of engineering capacity</b> tied to initiatives that no longer map to Q2 OKRs. Realignment plan ready to review in the Decisions queue.',
         searched:['Confluence strategy','Jira capacity','Smartsheet portfolio'],
         delivery:{
@@ -5666,6 +6223,32 @@ const TENANTS = {
         }
       }
     ],
+
+    canonicalEntity: 'Projects',
+    canonicalFields: [
+      { k:'id', typ:'uuid' },
+      { k:'name', typ:'string' },
+      { k:'status', typ:'enum' },
+      { k:'owner_id', typ:'→people' },
+      { k:'client_id', typ:'→accounts' },
+      { k:'budget_id', typ:'→budgets' },
+      { k:'start_date', typ:'date' },
+      { k:'target_date', typ:'date' },
+      { k:'health_score', typ:'computed' },
+      { k:'version', typ:'int (audit)' }
+    ],
+    harmonization: {
+      fieldName: 'Status Field',
+      canonicalValue: 'active',
+      examples: [
+        { source:'jira.status', value:'In Progress' },
+        { source:'salesforce.Stage', value:'in-progress' },
+        { source:'github.label', value:'WIP' },
+        { source:'smartsheet.Status', value:'Started' },
+        { source:'netsuite.ProjStatus', value:'Active' }
+      ],
+      footnote:'Mapping learned from 3 human corrections · Confidence improving with every approval'
+    },
 
     schemaLeft: [
       { name:'Jira', fields:[['summary','98%'],['status','94%'],['assignee','96%'],['duedate','99%']] },
@@ -5887,13 +6470,12 @@ const TENANTS = {
         asker:'Robert Hayes', role:'CEO', avatar:'RH',
         channel:'Slack DM', when:'1h ago',
         question:'Is Project Aurora really green for the Q2 launch?',
-        verdict:'refuted', confidence:92,
+        verdict:'refuted', confidence:92, tta:'1 min', ttaWithout:'4 weeks',
         summary:'BU-East reports Aurora as <b>"Green"</b> in the executive dashboard. Four independent systems disagree. <b>$4.2M Q2 client SLA at risk.</b> Engineering burn 34% over plan. 8 critical incidents in 14 days. Velocity collapsed 41% over 3 sprints.',
         searched:['Salesforce','NetSuite','ServiceNow','GitHub','Slack #aurora'],
-        deepDive:true,
         delivery:{
           type:'slack',
-          channel:'aegensynq-bot · Direct message',
+          channel:'AegenSynq Bot · Direct message',
           name:'AegenSynq', time:'8:42 AM',
           body:'<strong>Re: Is Aurora really green for Q2 launch?</strong><br><br>Short answer: <em>No.</em> Four systems disagree with BU-East\'s "Green" status:<br><br>• <strong>Salesforce</strong>: $4.2M Q2 client SLA at risk · 60-day window<br>• <strong>NetSuite</strong>: engineering burn 34% over plan · $1.8M overrun trajectory<br>• <strong>ServiceNow</strong>: 8 critical incidents tied to Aurora components in 14 days<br>• <strong>GitHub</strong>: Aurora repo velocity −41% over 3 sprints<br><br>Confidence: <strong>92%</strong>. This is the kind of conflict no single tool catches.'
         }
@@ -5902,7 +6484,7 @@ const TENANTS = {
         asker:'Linda Acharya', role:'CFO', avatar:'LA',
         channel:'Email reply', when:'3h ago',
         question:'What is our true cross-BU SaaS spend on overlapping vendors?',
-        verdict:'confirmed', confidence:99,
+        verdict:'confirmed', confidence:99, tta:'3 min', ttaWithout:'8 weeks',
         summary:'<b>$1.2M/year in duplicate enterprise contracts across 4 BUs.</b> Datadog ($340K), Atlassian ($280K), Workday integrations ($210K), Confluence ($150K), and 3 smaller categories. Procurement consolidation framework ready.',
         searched:['NetSuite vendor master','Coupa','Workday cost centers'],
         delivery:{
@@ -5917,7 +6499,7 @@ const TENANTS = {
         asker:'Sarah Mendez', role:'PMO Director', avatar:'SM',
         channel:'Slack DM', when:'5h ago',
         question:'Which of my engineers are over-allocated this sprint?',
-        verdict:'refuted', confidence:96,
+        verdict:'refuted', confidence:96, tta:'2 min', ttaWithout:'3 weeks',
         summary:'BU-East and BU-West capacity reports both show <b>"all engineers healthy."</b> Entity resolution finds <b>4 senior engineers double-allocated across both BUs</b>. Total overage: 47 hours/week. Each BU only sees its own slice — AegenSynq sees the total.',
         searched:['Jira BU-East','Jira BU-West','Smartsheet BU-Henderson','Workday'],
         delivery:{
@@ -5931,7 +6513,7 @@ const TENANTS = {
         asker:'Margaret Chen', role:'Board Chair', avatar:'MC',
         channel:'Email reply', when:'Yesterday',
         question:'Are we ready for the SOX audit next month?',
-        verdict:'partial', confidence:85,
+        verdict:'partial', confidence:85, tta:'10 min', ttaWithout:'10 weeks',
         summary:'<b>Mostly ready, with 47,200 records flagged.</b> 28,400 NetSuite financial records past 7-year retention. 14,200 Salesforce closed deals same. 4,600 Workday termination records. Legal hold check passed on all. Cleanup is the only blocker.',
         searched:['NetSuite','Salesforce','Workday','Confluence audit prep'],
         delivery:{
@@ -5946,7 +6528,7 @@ const TENANTS = {
         asker:'James Okafor', role:'CRO', avatar:'JO',
         channel:'Slack DM', when:'6h ago',
         question:'Did the Henderson acquisition actually integrate?',
-        verdict:'refuted', confidence:89,
+        verdict:'refuted', confidence:89, tta:'3 min', ttaWithout:'12 weeks',
         summary:'90 days post-close, <b>Henderson is still siloed.</b> 12,400 contacts unmerged. 3,200 are duplicates of parent CRM records with conflicting account ownership. Two BUs are calling the same customers without knowing it. M&A integration is incomplete.',
         searched:['Salesforce primary','Salesforce Henderson','Workday org chart'],
         delivery:{
@@ -5957,6 +6539,34 @@ const TENANTS = {
         }
       }
     ],
+
+    canonicalEntity: 'Projects',
+    canonicalFields: [
+      { k:'id', typ:'uuid' },
+      { k:'name', typ:'string' },
+      { k:'status', typ:'enum' },
+      { k:'business_unit', typ:'enum (4 BUs)' },
+      { k:'owner_id', typ:'→people' },
+      { k:'client_id', typ:'→accounts' },
+      { k:'budget_id', typ:'→budgets' },
+      { k:'cost_center', typ:'→workday' },
+      { k:'start_date', typ:'date' },
+      { k:'target_date', typ:'date' },
+      { k:'health_score', typ:'computed' },
+      { k:'version', typ:'int (audit)' }
+    ],
+    harmonization: {
+      fieldName: 'Status Field',
+      canonicalValue: 'active',
+      examples: [
+        { source:'jira.status', value:'In Progress' },
+        { source:'salesforce.Stage', value:'Negotiation' },
+        { source:'servicenow.state', value:'Work in Progress' },
+        { source:'netsuite.ProjStatus', value:'Active' },
+        { source:'workday.project_phase', value:'EXECUTING' }
+      ],
+      footnote:'Cross-BU consistency · 4 business units harmonized to single canonical value'
+    },
 
     schemaLeft: [
       { name:'Jira', fields:[['summary','97%'],['status','92%'],['assignee','94%'],['epic','89%','med']] },
@@ -6011,7 +6621,7 @@ const TENANTS = {
   riverside: {
     name: "Riverside County Health Services",
     plan: "Government",
-    descriptor: "Public health agency · 14 of 72 systems connected · paper + legacy + Tyler ERP · Phase 0 active",
+    descriptor: "Public health agency · 14 of 72 systems connected · paper + legacy + Tyler ERP · Digitization active",
     employees: "1,200 employees",
     records: "580,000",
     systemCount: 14,
@@ -6038,9 +6648,9 @@ const TENANTS = {
       { name: "HRSA UDS portal", count: "1,160" }
     ],
 
-    ovSub: 'Phase 0/1 digitization · <b>Riverside County Health Services</b> · 14 of 72 systems · 1,200 employees · paper + legacy + Tyler ERP',
+    ovSub: 'Digitization layer · <b>Riverside County Health Services</b> · 14 of 72 systems · 1,200 employees · paper + legacy + Tyler ERP',
     intelSub: 'Cross-department insights that <b>only exist</b> after digitization unifies paper, legacy DB, and Tyler ERP',
-    actSub: 'Everything AegenSynq has done across <b>Riverside County Health</b> in the last 7 days · Phase 0 active',
+    actSub: 'Everything AegenSynq has done across <b>Riverside County Health</b> in the last 7 days · Digitization active',
     dxSub: 'Government governance · HIPAA-aware approvals · Audit-grade · <b>Riverside County Health</b>',
     schemaSub: 'AI-mapped fields from 6 sources (paper, legacy DB, Tyler) into one model · <b>89% avg confidence</b>',
 
@@ -6056,7 +6666,7 @@ const TENANTS = {
         sources:['HRSA portal','Oracle patient DB','OCR\'d intake forms'], action:'Approve' },
       { sev:'success', tag:'Routine · Digitization', title:'1,840 paper intake forms digitized this week — 96% OCR confidence.',
         body:'Paper intake forms scanned and ingested into the canonical schema. <strong>1,766 forms cleared at 96%+ confidence</strong> (auto-approved). 74 routed for human review (handwritten edge cases). Cross-referenced against existing patient records.',
-        sources:['Phase 0 OCR pipeline','Canonical: People','74 edge cases'], action:'Approve' },
+        sources:['OCR pipeline','Canonical: People','74 edge cases'], action:'Approve' },
       { sev:'success', tag:'Routine · Reporting', title:'Same patient counted 3 times across departments · reporting accuracy issue.',
         body:'AegenSynq detected that 23% of patients are being counted in multiple departments\' monthly reports — once at intake, once at treatment, once at billing. <strong>This inflates department-level KPIs and grant metrics.</strong> Cross-department deduplication recommended.',
         sources:['Cross-dept reports','Canonical: People','Grant metrics'], action:'Approve' }
@@ -6105,7 +6715,7 @@ const TENANTS = {
         { sev:'routine', icon:'⊕',
           question:'Should we approve 1,766 OCR\'d paper intake forms for ingestion?',
           context:'Last week\'s paper intake batch. <b>96%+ OCR confidence on all 1,766 forms.</b> Cross-referenced against existing patient records. The remaining 74 lower-confidence forms (handwritten scrawl) route for individual review.',
-          metas:['2 minutes to review','Phase 0 routine','High confidence batch'],
+          metas:['2 minutes to review','OCR routine','High confidence batch'],
           ifApprove:'1,766 forms ingest into the canonical schema. New patients get records created. Existing patients get visit records updated. 74 edge cases route to a human reviewer.',
           ifReject:'Forms stay in OCR queue. Patient records are not updated. Billing handoff blocked.',
           evidence:[
@@ -6172,10 +6782,9 @@ const TENANTS = {
         asker:'Patricia Ellis', role:'Health Director', avatar:'PE',
         channel:'Email reply', when:'This morning',
         question:'Are we billing for all the visits we provide care for?',
-        verdict:'refuted', confidence:96,
+        verdict:'refuted', confidence:96, tta:'2 min', ttaWithout:'6 weeks',
         summary:'No. <b>142 patient visits in the last 30 days have treatment records but no billing entry.</b> Paper intake → Oracle treatment → Tyler ERP handoff has a hole. Estimated lost revenue: <b>$310K annualized</b>. Cause: paper intake takes 18 days to reach billing.',
         searched:['Paper intake (OCR)','Oracle 11g','Tyler Munis billing'],
-        deepDive:true,
         delivery:{
           type:'email',
           from:'AegenSynq <answers@aegensynq.ai>',
@@ -6188,7 +6797,7 @@ const TENANTS = {
         asker:'Marcus Webb', role:'Compliance Officer', avatar:'MW',
         channel:'Slack DM', when:'2h ago',
         question:'Do we have HIPAA consent on file for everyone in the database?',
-        verdict:'partial', confidence:94,
+        verdict:'partial', confidence:94, tta:'3 min', ttaWithout:'8 weeks',
         summary:'<b>4,200 patients have conflicting consent records across departments.</b> Same person, three systems, three different consent values. <em>Active HIPAA exposure</em> until reconciled. AegenSynq can resolve using most-restrictive (HIPAA-safe default) with one approval.',
         searched:['Oracle 11g','Epic EHR','Excel intake log'],
         delivery:{
@@ -6202,7 +6811,7 @@ const TENANTS = {
         asker:'Rosa Delgado', role:'Grants Manager', avatar:'RD',
         channel:'Email reply', when:'Yesterday',
         question:'Are we ready for the HRSA Q2 grant report due in 14 days?',
-        verdict:'partial', confidence:88,
+        verdict:'partial', confidence:88, tta:'5 min', ttaWithout:'3 weeks',
         summary:'<b>Not yet — 4,200 patient records are missing required demographic fields</b> (race, ethnicity, primary language). AegenSynq can auto-fill <b>3,100 from cross-referenced sources</b>. The remaining 1,100 need patient outreach. Penalty risk drops from 73% to 9% with auto-fill approval.',
         searched:['HRSA portal','Oracle 11g','Paper intake history'],
         delivery:{
@@ -6217,7 +6826,7 @@ const TENANTS = {
         asker:'James Whitfield', role:'County Supervisor', avatar:'JW',
         channel:'Email reply', when:'Yesterday',
         question:'How many unique patients did we serve last quarter?',
-        verdict:'refuted', confidence:97,
+        verdict:'refuted', confidence:97, tta:'1 min', ttaWithout:'2 weeks',
         summary:'Department reports say <b>12,400</b>. The true unique count is <b>10,080</b> — a 23% inflation from cross-department duplication. The same patient is being counted at intake, again at treatment, and again at billing. Reported numbers in past quarters likely have the same issue.',
         searched:['Oracle 11g','Epic EHR','Tyler Munis','Paper intake'],
         delivery:{
@@ -6232,7 +6841,7 @@ const TENANTS = {
         asker:'Aisha Brennan', role:'Operations Director', avatar:'AB',
         channel:'Slack DM', when:'3d ago',
         question:'Why is paper intake taking 18 days to reach billing?',
-        verdict:'confirmed', confidence:91,
+        verdict:'confirmed', confidence:91, tta:'2 min', ttaWithout:'2 weeks',
         summary:'<b>Confirmed: 18-day average latency.</b> Paper form → OCR queue (4 days) → Oracle treatment update (7 days) → manual entry to Tyler ERP (7 days). Each handoff is manual. Best-practice agencies do this in 3 days end-to-end. Front-desk digital intake closes the gap.',
         searched:['Paper intake logs','OCR queue metrics','Oracle 11g','Tyler Munis'],
         delivery:{
@@ -6243,6 +6852,34 @@ const TENANTS = {
         }
       }
     ],
+
+    canonicalEntity: 'Patients',
+    canonicalFields: [
+      { k:'id', typ:'uuid' },
+      { k:'mrn', typ:'string (medical record #)' },
+      { k:'first_name', typ:'string' },
+      { k:'last_name', typ:'string' },
+      { k:'dob', typ:'date' },
+      { k:'primary_language', typ:'enum (HRSA)' },
+      { k:'race', typ:'enum (HRSA)' },
+      { k:'ethnicity', typ:'enum (HRSA)' },
+      { k:'consent_status', typ:'enum (HIPAA)' },
+      { k:'last_visit_date', typ:'date' },
+      { k:'billing_status', typ:'enum' },
+      { k:'version', typ:'int (audit)' }
+    ],
+    harmonization: {
+      fieldName: 'HIPAA Consent Field',
+      canonicalValue: 'consented',
+      examples: [
+        { source:'oracle_11g.CONSENT_FLAG', value:'Y' },
+        { source:'epic_ehr.consent_to_treat', value:'yes' },
+        { source:'paper_intake.consent_signed', value:'X (checked)' },
+        { source:'tyler_munis.privacy_ack', value:'1' },
+        { source:'excel_grant.consent_col', value:'consented' }
+      ],
+      footnote:'Most-restrictive resolution wins · HIPAA-safe default · Unresolved conflicts route to compliance'
+    },
 
     schemaLeft: [
       { name:'Tyler ERP', fields:[['account_number','98%'],['patient_name','94%'],['service_code','92%'],['amount_billed','99%']] },
@@ -6266,7 +6903,7 @@ const TENANTS = {
       { sev:'success', icon:'→', when:'2h ago', title:'Wrote canonical patient IDs back to Tyler ERP (28,400 records).', detail:'Cross-system identity resolution committed to source · enables billing-to-treatment linkage · approval-gated', badge:'Write-back' },
       { sev:'critical', icon:'!', when:'Just now', title:'142 unbilled patient visits identified.', detail:'Paper intake → treatment → billing handoff gap · $48K revenue leak · Cross-system trace complete', badge:'Revenue' },
       { sev:'warning', icon:'§', when:'2h ago', title:'4,200 patient records flagged for HIPAA consent reconciliation.', detail:'Inconsistent consent values across intake, treatment, billing · Most-restrictive resolution recommended', badge:'HIPAA' },
-      { sev:'success', icon:'✓', when:'4h ago', title:'1,840 paper intake forms digitized.', detail:'OCR pipeline · 96% confidence · 74 edge cases routed for review · Cross-referenced against existing patients', badge:'Phase 0' },
+      { sev:'success', icon:'✓', when:'4h ago', title:'1,840 paper intake forms digitized.', detail:'OCR pipeline · 96% confidence · 74 edge cases routed for review · Cross-referenced against existing patients', badge:'Digitization' },
       { sev:'info', icon:'→', when:'6h ago', title:'HRSA Q2 grant report gap analysis completed.', detail:'4,200 records missing required demographic fields · 3,100 auto-fillable from cross-references · 14 days to deadline', badge:'Grant' },
       { sev:'learn', icon:'◊', when:'Yesterday', title:'Pattern learned: cross-department patient duplication.', detail:'23% of patients counted multiple times across department reports · Reporting metrics inflated', badge:'Learning' },
       { sev:'success', icon:'✓', when:'2d ago', title:'Tyler ERP and Oracle 11g identity resolution complete.', detail:'18,400 Tyler records linked to 32,800 Oracle records · 96% match rate · Canonical patient IDs established', badge:'Auto-action' },
@@ -6298,6 +6935,10 @@ const TENANTS = {
 function renderTopbar(t){
   document.getElementById('tbTenantName').textContent = t.name;
   document.getElementById('tbTenantPlan').textContent = t.plan;
+  document.getElementById('tbSync').textContent = t.sync;
+  // Also update the Intel view's "Continuous Forecasts · Updated Xm ago" header
+  const intelSync = document.getElementById('intelForecastSync');
+  if (intelSync) intelSync.textContent = t.sync;
   document.querySelectorAll('.tenant-opt').forEach(opt => {
     opt.classList.toggle('current', opt.dataset.tenant === currentTenant);
   });
@@ -6306,10 +6947,15 @@ function renderTopbar(t){
 function renderSidebar(t){
   document.getElementById('sideSystemsH').innerHTML = `Connected · <span style="color:var(--cobalt-bright);">${t.systemCount}</span> of ${t.totalSaaS} SaaS <span class="side-add">+</span>`;
   let html = t.systems.map(s =>
-    `<div class="sys-item${s.warn ? ' warn' : ''}"><span class="sd"></span><span class="name">${s.name}</span><span class="recs">${s.count}</span></div>`
+    `<div class="sys-item${s.warn ? ' warn' : ''}"${s.warn ? ' title="Open item: AegenSynq has flagged this system. See Decisions Queue or Activity feed for details."' : ''}><span class="sd"></span><span class="name">${s.name}</span><span class="recs">${s.count}</span></div>`
   ).join('');
   if (t.extraSystems){
     html += `<div class="sys-item" style="opacity:0.6;font-style:italic;"><span class="sd" style="background:var(--text-4);box-shadow:none;"></span><span class="name">+ ${t.extraSystems} more connected</span></div>`;
+  }
+  // Add a legend if any system is flagged
+  const hasWarn = t.systems.some(s => s.warn);
+  if (hasWarn) {
+    html += `<div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-family:var(--fm);font-size:9px;color:var(--text-4);letter-spacing:0.04em;line-height:1.5;display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:var(--amber);box-shadow:0 0 5px rgba(245,158,11,0.5);flex-shrink:0;"></span><span>Open item flagged for review</span></div>`;
   }
   document.getElementById('sideSystems').innerHTML = html;
   document.getElementById('sideStats').innerHTML = `
@@ -6439,6 +7085,20 @@ function renderActivity(t){
 
 function renderSchema(t){
   document.getElementById('schemaSub').innerHTML = t.schemaSub;
+  document.getElementById('schemaTitleEl').textContent = `Canonical Schema · ${t.canonicalEntity}`;
+  document.getElementById('canonicalEntityName').textContent = t.canonicalEntity;
+  // Render canonical fields
+  document.getElementById('canonicalFieldsEl').innerHTML = t.canonicalFields.map(f =>
+    `<div class="cf"><span class="k">${f.k}</span><span class="typ">${f.typ}</span></div>`
+  ).join('');
+  // Render harmonization example
+  document.getElementById('harmonizationTitle').textContent = `${t.harmonization.fieldName} · Value Harmonization`;
+  document.getElementById('harmonizationMeta').textContent = `${t.harmonization.examples.length} source values → 1 canonical state`;
+  const harmHtml = t.harmonization.examples.map(ex =>
+    `<div><span style="color:var(--text-4);">${ex.source}</span> "${ex.value}" &nbsp;<span style="color:var(--cobalt-bright);">→</span>&nbsp; <strong style="color:#fff;">${t.harmonization.canonicalValue}</strong></div>`
+  ).join('') + `<div style="margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:11px;color:var(--text-3);">${t.harmonization.footnote}</div>`;
+  document.getElementById('harmonizationEl').innerHTML = harmHtml;
+
   const card = (s) => {
     const fieldsHtml = s.fields.map((f, idx) => {
       const wb = (idx === 0 || idx === 2) ? '<span class="wb">← →</span>' : '';
@@ -6603,6 +7263,7 @@ function renderAnswers(t){
           <div class="answer-content">
             <div class="answer-q">${a.question}</div>
             <div class="answer-summary">${a.summary}</div>
+            ${a.tta ? `<div class="answer-velocity"><span class="vel-icon">⚡</span><span><b>${a.tta}</b> with AegenSynq</span><span class="vel-vs">vs</span><span class="vel-without"><b>${a.ttaWithout}</b> without</span></div>` : ''}
             <div class="answer-meta">
               <span><b style="color:var(--text-2);">${a.asker}</b></span>
               <span class="channel">via ${a.channel}</span>
@@ -6660,7 +7321,14 @@ function applyTenant(key){
   if (typeof scanBar !== 'undefined') {
     scanBar.classList.remove('active');
     scanBtn.disabled = false;
-    scanBtn.textContent = '▶ Run Scan';
+    scanBtn.textContent = 'Run Scan';
+  }
+  // If switching tenants while on a tenant-agnostic view (FAQ or Competitive
+  // Position), jump to Overview so the user sees the new tenant's data.
+  // Otherwise stay put so the user keeps their place on tenant-specific views.
+  const activeView = document.querySelector('.view.active');
+  if (activeView && activeView.id === 'viewFaq') {
+    goView('overview');
   }
 }
 
