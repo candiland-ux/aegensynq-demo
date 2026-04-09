@@ -4083,6 +4083,11 @@ body.fullscreen-view .app > .body{grid-template-columns:1fr !important;}
 }
 .help-popover .close:hover{color:var(--text);}
 
+/* Show hamburger whenever sidebar is hidden */
+@media (max-width:820px){
+  .hamburger-btn{display:flex !important;}
+}
+
 /* ============================================================ */
 /* === MOBILE PHONE PASS (≤ 600px) — MUST BE LAST ============= */
 /* ============================================================ */
@@ -4449,6 +4454,151 @@ body.fullscreen-view .app > .body{grid-template-columns:1fr !important;}
   .demo-toast.show{transform:translateY(0) !important;}
 }
 
+/* ============================================================ */
+/* === BASELINE HINT (Overview) =============================== */
+/* ============================================================ */
+.baseline-hint{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  background:rgba(245,158,11,0.08);
+  border:1px solid rgba(245,158,11,0.25);
+  border-left:3px solid var(--amber);
+  border-radius:5px;
+  padding:12px 16px;
+  margin-bottom:18px;
+  font-family:var(--fb);
+  font-size:12px;
+  color:var(--text-2);
+  line-height:1.5;
+}
+.baseline-hint.hidden{display:none;}
+.baseline-hint .bh-arrow{
+  color:var(--amber);
+  font-size:16px;
+  line-height:1;
+  flex-shrink:0;
+  margin-top:1px;
+}
+.baseline-hint b{color:var(--text);font-weight:500;}
+.baseline-hint em{color:var(--amber);font-style:normal;font-weight:500;}
+
+/* ============================================================ */
+/* === MOBILE NAV DRAWER ====================================== */
+/* ============================================================ */
+.hamburger-btn{
+  display:none;
+  background:transparent;
+  border:1px solid var(--line-2);
+  border-radius:5px;
+  width:36px;
+  height:32px;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  cursor:pointer;
+  padding:0;
+  flex-shrink:0;
+}
+.hamburger-btn span{
+  display:block;
+  width:16px;
+  height:1.5px;
+  background:var(--text-2);
+  border-radius:1px;
+}
+.hamburger-btn:hover{border-color:var(--cobalt-bright);}
+.hamburger-btn:hover span{background:var(--cobalt-bright);}
+
+.mobile-drawer-backdrop{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  z-index:300;
+  opacity:0;
+  transition:opacity 0.25s;
+}
+.mobile-drawer-backdrop.open{
+  display:block;
+  opacity:1;
+}
+.mobile-drawer{
+  position:fixed;
+  left:-300px;
+  top:0;
+  bottom:0;
+  width:280px;
+  max-width:85vw;
+  background:var(--bg-1);
+  border-right:1px solid var(--line);
+  z-index:301;
+  transition:left 0.25s ease-out;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 0 60px rgba(0,0,0,0.5);
+}
+.mobile-drawer.open{left:0;}
+.mobile-drawer-h{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 22px 14px;
+  font-family:var(--fm);
+  font-size:9px;
+  color:var(--text-4);
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+}
+.mobile-drawer-h + .mobile-drawer-h{
+  border-top:1px solid var(--line);
+  margin-top:10px;
+  padding-top:18px;
+}
+.mobile-drawer-close{
+  background:transparent;
+  border:none;
+  color:var(--text-3);
+  font-size:24px;
+  cursor:pointer;
+  line-height:1;
+  padding:0 4px;
+}
+.mobile-drawer-close:hover{color:var(--text);}
+.mobile-drawer-section{
+  padding:0 14px 6px;
+}
+.mobile-drawer .nav-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:11px 12px;
+  border-radius:5px;
+  cursor:pointer;
+  font-size:13px;
+  color:var(--text-2);
+  margin-bottom:2px;
+}
+.mobile-drawer .nav-item:hover{background:var(--bg-2);color:var(--text);}
+.mobile-drawer .nav-item.active{background:var(--cobalt-soft);color:var(--cobalt-bright);}
+.mobile-drawer .nav-item .ico{
+  width:18px;
+  height:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--text-3);
+  flex-shrink:0;
+}
+.mobile-drawer .nav-item.active .ico{color:var(--cobalt-bright);}
+.mobile-drawer-foot{
+  margin-top:auto;
+  padding:18px 22px 22px;
+  border-top:1px solid var(--line);
+}
+
 </style>
 </head>
 <body>
@@ -4478,6 +4628,9 @@ body.fullscreen-view .app > .body{grid-template-columns:1fr !important;}
 
   <!-- TOPBAR -->
   <div class="topbar">
+    <button class="hamburger-btn" onclick="toggleMobileDrawer()" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
     <div class="brand">Aegen<em>Synq</em></div>
     <div class="tb-divider"></div>
     <div class="tenant-switch">
@@ -4517,6 +4670,55 @@ body.fullscreen-view .app > .body{grid-template-columns:1fr !important;}
       <button class="tb-tour" onclick="startTour()">▶ Guided Tour</button>
     </div>
   </div>
+
+  <!-- MOBILE NAV DRAWER (visible only on mobile) -->
+  <div class="mobile-drawer-backdrop" id="mobileDrawerBackdrop" onclick="closeMobileDrawer()"></div>
+  <aside class="mobile-drawer" id="mobileDrawer">
+    <div class="mobile-drawer-h">
+      <span>Workspace</span>
+      <button class="mobile-drawer-close" onclick="closeMobileDrawer()" aria-label="Close menu">×</button>
+    </div>
+    <div class="mobile-drawer-section">
+      <div class="nav-item" data-view="overview" onclick="goView('overview');closeMobileDrawer()">
+        <span class="ico"><svg viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" stroke="currentColor" stroke-width="1.2"/><rect x="8" y="1" width="5" height="5" stroke="currentColor" stroke-width="1.2"/><rect x="1" y="8" width="5" height="5" stroke="currentColor" stroke-width="1.2"/><rect x="8" y="8" width="5" height="5" stroke="currentColor" stroke-width="1.2"/></svg></span>
+        Data Health · Overview
+      </div>
+      <div class="nav-item" data-view="answers" onclick="goView('answers');closeMobileDrawer()">
+        <span class="ico"><svg viewBox="0 0 14 14" fill="none"><path d="M1 3h12v8H4l-3 3V3z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></span>
+        Answers
+      </div>
+      <div class="nav-item" data-view="decisions" onclick="goView('decisions');closeMobileDrawer()">
+        <span class="ico"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3 3 7-7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        Decisions Queue
+      </div>
+      <div class="nav-item" data-view="intel" onclick="goView('intel');closeMobileDrawer()">
+        <span class="ico"><svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2" fill="currentColor"/><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.2"/></svg></span>
+        Predictive Intelligence
+      </div>
+      <div class="nav-item" data-view="savings" onclick="goView('savings');closeMobileDrawer()">
+        <span class="ico"><svg viewBox="0 0 14 14" fill="none"><path d="M7 1v12M4 4h4a2 2 0 010 4H5a2 2 0 000 4h5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+        Cost Savings
+      </div>
+      <div class="nav-item" data-view="schema" onclick="goView('schema');closeMobileDrawer()">
+        <span class="ico"><svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2" stroke="currentColor" stroke-width="1.2"/><circle cx="2" cy="2" r="1.2" stroke="currentColor" stroke-width="1.2"/><circle cx="12" cy="2" r="1.2" stroke="currentColor" stroke-width="1.2"/><circle cx="2" cy="12" r="1.2" stroke="currentColor" stroke-width="1.2"/><circle cx="12" cy="12" r="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 3l3 3M11 3L8 6M3 11l3-3M11 11L8 8" stroke="currentColor" stroke-width="1"/></svg></span>
+        Canonical Schema
+      </div>
+      <div class="nav-item" data-view="activity" onclick="goView('activity');closeMobileDrawer()">
+        <span class="ico"><svg viewBox="0 0 14 14" fill="none"><path d="M1 7h3l2-5 2 10 2-5h3" stroke="currentColor" stroke-width="1.2"/></svg></span>
+        Activity Feed
+      </div>
+    </div>
+    <div class="mobile-drawer-h">Investor Context</div>
+    <div class="mobile-drawer-section">
+      <div class="nav-item" data-view="faq" onclick="goView('faq');closeMobileDrawer()">
+        <span class="ico"><svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M5 5.5C5 4 6 3 7 3s2 1 2 2.2c0 1.2-2 1.5-2 2.8M7 10v.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+        Investor Context
+      </div>
+    </div>
+    <div class="mobile-drawer-foot">
+      <button class="btn btn-pri" onclick="closeMobileDrawer();startTour()" style="width:100%;">▶ Guided Tour</button>
+    </div>
+  </aside>
 
   <!-- BODY -->
   <div class="body">
@@ -4600,6 +4802,11 @@ body.fullscreen-view .app > .body{grid-template-columns:1fr !important;}
               <span class="pct" id="scanPct">0%</span>
             </div>
             <div class="scan-track"><div class="scan-fill" id="scanFill"></div></div>
+          </div>
+
+          <div class="baseline-hint" id="baselineHint">
+            <span class="bh-arrow">▴</span>
+            <span><b>Baseline state · </b>Click <em>Run Scan</em> above to transform these tiles from <b>baseline reality</b> into <b>resolved value</b>. The numbers stay the same — the tags, bars, and impact lines below them update to show what AegenSynq actually did.</span>
           </div>
 
           <div class="metrics" id="metrics">
@@ -5928,8 +6135,7 @@ function goView(name){
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('view' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
-  const navItem = document.querySelector('.nav-item[data-view="'+name+'"]');
-  if (navItem) navItem.classList.add('active');
+  document.querySelectorAll('.nav-item[data-view="'+name+'"]').forEach(n => n.classList.add('active'));
   document.querySelector('.main').scrollTop = 0;
   // Fullscreen views (no sidebar): Investor FAQ is a reading experience about
   // the business, not about navigating the workspace. Hide the sidebar there.
@@ -5946,6 +6152,16 @@ document.querySelectorAll('.nav-item').forEach(item => {
 // === WELCOME ===
 function closeWelcome(){
   document.getElementById('welcome').classList.add('hidden');
+}
+
+// === MOBILE DRAWER ===
+function toggleMobileDrawer(){
+  document.getElementById('mobileDrawer').classList.toggle('open');
+  document.getElementById('mobileDrawerBackdrop').classList.toggle('open');
+}
+function closeMobileDrawer(){
+  document.getElementById('mobileDrawer').classList.remove('open');
+  document.getElementById('mobileDrawerBackdrop').classList.remove('open');
 }
 
 // === DEMO TOAST ===
@@ -6050,6 +6266,9 @@ scanBtn.addEventListener('click', async () => {
   scanBtn.disabled = true;
   scanBtn.textContent = '◌ Scanning…';
   scanBar.classList.add('active');
+  // Hide the baseline hint — the user understood the interaction
+  const hint = document.getElementById('baselineHint');
+  if (hint) hint.classList.add('hidden');
   document.querySelectorAll('.icard').forEach(c => c.classList.remove('show'));
   document.getElementById('insightCount').textContent = '0 active';
 
@@ -7691,6 +7910,9 @@ function applyTenant(key){
     scanBtn.disabled = false;
     scanBtn.textContent = 'Run Scan';
   }
+  // re-show baseline hint since tiles reset to baseline state
+  const hint = document.getElementById('baselineHint');
+  if (hint) hint.classList.remove('hidden');
   // If switching tenants while on a tenant-agnostic view (FAQ or Competitive
   // Position), jump to Overview so the user sees the new tenant's data.
   // Otherwise stay put so the user keeps their place on tenant-specific views.
