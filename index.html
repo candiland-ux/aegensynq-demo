@@ -3528,7 +3528,7 @@ body{
       Use the top bar to switch between three tenant profiles and see how the same platform handles drastically different data realities.
     </p>
     <div class="welcome-btns">
-      <button class="btn btn-pri" onclick="startTour()">Guided Tour · 13 steps</button>
+      <button class="btn btn-pri" onclick="startTour()">Guided Tour · 14 steps</button>
       <button class="btn btn-ghost" onclick="closeWelcome()">Explore freely</button>
       <button class="btn btn-ghost" onclick="closeWelcome();goView('faq')">Investor FAQ</button>
     </div>
@@ -3641,19 +3641,19 @@ body{
       <div class="side-section">
         <div class="side-h" id="sideSystemsH">Connected Systems <span class="side-add">+</span></div>
         <div id="sideSystems">
-          <div class="sys-item"><span class="sd"></span><span class="name">Jira</span><span class="recs">4,820</span></div>
-          <div class="sys-item"><span class="sd"></span><span class="name">Salesforce</span><span class="recs">6,140</span></div>
-          <div class="sys-item"><span class="sd"></span><span class="name">Slack</span><span class="recs">2,910</span></div>
-          <div class="sys-item warn"><span class="sd"></span><span class="name">Smartsheet</span><span class="recs">1,850</span></div>
-          <div class="sys-item"><span class="sd"></span><span class="name">NetSuite</span><span class="recs">2,680</span></div>
+          <div class="sys-item"><span class="sd"></span><span class="name">Jira</span><span class="recs">340K</span></div>
+          <div class="sys-item"><span class="sd"></span><span class="name">Salesforce</span><span class="recs">280K</span></div>
+          <div class="sys-item"><span class="sd"></span><span class="name">Slack</span><span class="recs">186K</span></div>
+          <div class="sys-item warn"><span class="sd"></span><span class="name">Smartsheet</span><span class="recs">42K</span></div>
+          <div class="sys-item"><span class="sd"></span><span class="name">NetSuite</span><span class="recs">128K</span></div>
         </div>
       </div>
 
       <div class="side-section">
         <div class="side-h">Tenant</div>
         <div class="tenant-stats" id="sideStats">
-          <div><span>Records</span><b>18,400</b></div>
-          <div><span>Systems</span><b>5</b></div>
+          <div><span>Records</span><b>1.4M</b></div>
+          <div><span>Systems</span><b>22</b></div>
           <div><span>Last sync</span><b>4m ago</b></div>
           <div><span>Plan</span><b>Mid-Market</b></div>
         </div>
@@ -3685,31 +3685,129 @@ body{
           <div class="metrics" id="metrics">
             <div class="metric" id="m1">
               <div class="metric-trend"><span style="height:30%"></span><span style="height:50%"></span><span style="height:45%"></span><span style="height:70%"></span><span style="height:65%"></span><span style="height:80%"></span><span style="height:90%"></span></div>
-              <div class="metric-lab" id="l1">Records across 12 systems <span class="tag">Fragmented</span></div>
-              <div class="metric-val"><span id="v1">285,000</span></div>
+              <div class="metric-lab" id="l1">Records across 22 systems <span class="tag">Fragmented</span></div>
+              <div class="metric-val"><span id="v1">1.4M</span></div>
               <div class="metric-bar"><div style="width:0%"></div></div>
               <div class="metric-impact" id="i1"></div>
             </div>
             <div class="metric" id="m2">
               <div class="metric-trend"><span style="height:60%"></span><span style="height:55%"></span><span style="height:70%"></span><span style="height:65%"></span><span style="height:80%"></span><span style="height:75%"></span><span style="height:85%"></span></div>
               <div class="metric-lab" id="l2">Cross-system conflicts <span class="tag">Existing</span></div>
-              <div class="metric-val"><span id="v2">1,840</span></div>
+              <div class="metric-val"><span id="v2">9,100</span></div>
               <div class="metric-bar"><div style="width:0%"></div></div>
               <div class="metric-impact" id="i2"></div>
             </div>
             <div class="metric" id="m3">
               <div class="metric-trend"><span style="height:40%"></span><span style="height:55%"></span><span style="height:50%"></span><span style="height:70%"></span><span style="height:60%"></span><span style="height:75%"></span><span style="height:65%"></span></div>
               <div class="metric-lab" id="l3">Leadership questions <span class="tag">This quarter</span></div>
-              <div class="metric-val"><span id="v3">47</span></div>
+              <div class="metric-val"><span id="v3">64</span></div>
               <div class="metric-bar"><div style="width:0%"></div></div>
               <div class="metric-impact" id="i3"></div>
             </div>
             <div class="metric leakage" id="m4">
               <div class="metric-trend"><span style="height:30%"></span><span style="height:42%"></span><span style="height:55%"></span><span style="height:60%"></span><span style="height:72%"></span><span style="height:80%"></span><span style="height:92%"></span></div>
               <div class="metric-lab" id="l4">Annual leakage detected <span class="tag">Bleeding</span></div>
-              <div class="metric-val"><span id="v4">$284K</span></div>
+              <div class="metric-val"><span id="v4">$480K</span></div>
               <div class="metric-bar"><div style="width:0%"></div></div>
               <div class="metric-impact" id="i4"></div>
+            </div>
+          </div>
+
+          <div class="riv-context" id="northwindContext" style="display:none">
+            <div class="riv-context-head">
+              <div class="riv-context-label">— Mid-market velocity · Northwind Logistics —</div>
+              <h3>How Northwind went from <em>fragmented</em> to clear in 2 weeks.</h3>
+              <p>Northwind is the mid-market tenant in this demo because it represents the segment already on modern SaaS but drowning in cross-tool fragmentation. Before AegenSynq, Maya Chen (CFO) had 22 connected SaaS systems out of 145 in the stack, status updates that did not match across tools, and vendor sprawl no one was tracking. The intelligence shown above and the answers the platform delivers below were standing up <strong>14 days after kickoff.</strong> This is what mid-market velocity looks like — no Phase 0 required, just connect, clean, and run.</p>
+            </div>
+            <div class="riv-grid">
+              <div class="riv-col before">
+                <div class="riv-col-label">Before AegenSynq</div>
+                <h4>SaaS-native but siloed</h4>
+                <ul>
+                  <li>22 SaaS connected · 145 in the full stack</li>
+                  <li>Jira, Salesforce, Slack, NetSuite, Smartsheet · siloed</li>
+                  <li>Status updates not matching across tools</li>
+                  <li>Optimism bias in PM weekly reports</li>
+                  <li>Vendor sprawl · no cross-tool view</li>
+                  <li>Maya manually reconciling reports each Friday</li>
+                  <li>No automated cleanup or dedup</li>
+                </ul>
+              </div>
+              <div class="riv-col phase0">
+                <div class="riv-col-label">Phase 1 · Onboarding · 14 days</div>
+                <h4>What AegenSynq deployed</h4>
+                <ul>
+                  <li>22 systems connected via MCP</li>
+                  <li>Canonical schema mapped · <strong>92% confidence</strong></li>
+                  <li>Cross-tool entity resolution trained</li>
+                  <li>Dedup rules learned from approval history</li>
+                  <li>Decision queue configured for Maya's preferences</li>
+                  <li>SOC 2 compliance framework loaded</li>
+                  <li>First scan complete · baseline established</li>
+                </ul>
+              </div>
+              <div class="riv-col phase1">
+                <div class="riv-col-label">Phase 1 · Intelligence · Active now</div>
+                <h4>What leadership gets today</h4>
+                <ul>
+                  <li><strong>$480K/yr leakage</strong> surfaced · $54K platform cost</li>
+                  <li>Atlas project conflict caught across 3 systems</li>
+                  <li><strong>$84K vendor sprawl</strong> flagged for consolidation</li>
+                  <li>3 strategy drift initiatives detected</li>
+                  <li>1,247 duplicate contacts deduplicated</li>
+                  <li>Maya: answers delivered to Slack <em>#cfo-direct</em></li>
+                  <li><strong>8.9× ROI</strong> confirmed</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="riv-context" id="meridianContext" style="display:none">
+            <div class="riv-context-head">
+              <div class="riv-context-label">— Enterprise complexity · Meridian Global Industries —</div>
+              <h3>How Meridian unified <em>4 BUs and a recent acquisition</em> in 4 weeks.</h3>
+              <p>Meridian is the enterprise tenant in this demo because it represents the multi-BU complexity that platform AI vendors structurally cannot solve. Each of Meridian's four business units (BU-East, BU-West, BU-Henderson from the recent acquisition, BU-Central) ran its own SaaS contracts, its own Jira and Salesforce instances, its own Datadog purchases. No one had a cross-BU view. AegenSynq gave Linda Acharya (CFO) <strong>one canonical model across all four BUs — including the Henderson M&amp;A integration — in 4 weeks.</strong></p>
+            </div>
+            <div class="riv-grid">
+              <div class="riv-col before">
+                <div class="riv-col-label">Before AegenSynq</div>
+                <h4>Four BUs, four data realities</h4>
+                <ul>
+                  <li>85 SaaS connected · 340 in the full stack across 4 BUs</li>
+                  <li>Each BU running its own Jira, Salesforce, Datadog</li>
+                  <li>Recent Henderson acquisition · still un-integrated</li>
+                  <li>$1.2M/yr in duplicate enterprise contracts</li>
+                  <li>Cross-BU resource allocation invisible</li>
+                  <li>Optimism bias compounding across BU reports</li>
+                  <li>SOX audit prep taking 8+ weeks manually</li>
+                </ul>
+              </div>
+              <div class="riv-col phase0">
+                <div class="riv-col-label">Phase 1 · Onboarding · 4 weeks</div>
+                <h4>What AegenSynq deployed</h4>
+                <ul>
+                  <li>85 systems unified across all 4 BUs</li>
+                  <li>Canonical schema mapped · <strong>91% confidence</strong></li>
+                  <li>Henderson acquisition reconciled into the model</li>
+                  <li>Cross-BU entity resolution for engineers, projects</li>
+                  <li>SOX retention pattern learned across all 4 BUs</li>
+                  <li>M&amp;A integration rules configured</li>
+                  <li>Multi-BU governance and approval workflows live</li>
+                </ul>
+              </div>
+              <div class="riv-col phase1">
+                <div class="riv-col-label">Phase 1 · Intelligence · Active now</div>
+                <h4>What leadership gets today</h4>
+                <ul>
+                  <li><strong>$4.2M/yr leakage</strong> surfaced · $480K platform cost</li>
+                  <li>Aurora Q2 SLA risk caught (4 systems disagreeing)</li>
+                  <li><strong>$1.2M vendor consolidation</strong> across 4 BUs</li>
+                  <li>47h/week capacity over-allocation detected</li>
+                  <li>47,200 SOX records flagged · <strong>6-day cleanup</strong></li>
+                  <li>Linda: answers delivered to Slack and email</li>
+                  <li><strong>8.75× ROI</strong> confirmed</li>
+                </ul>
+              </div>
             </div>
           </div>
 
@@ -4890,7 +4988,7 @@ body{
 <div class="tour-card" id="tourCard">
   <div class="tour-step" id="tourStep">Step 1 of 6</div>
   <h3 id="tourTitle">Welcome to AegenSynq</h3>
-  <p id="tourBody">This is the control plane for Northwind Logistics, a 240-person company with 5 connected systems.</p>
+  <p id="tourBody">You're inside a working simulation of the AegenSynq platform.</p>
   <div class="tour-actions">
     <div class="tour-progress" id="tourProgress"></div>
     <div class="tour-btns">
@@ -4906,7 +5004,7 @@ body{
     <div class="glossary-head">
       <div>
         <h2>Glossary</h2>
-        <p>Plain-English definitions for the terms you'll see across the AegenSynq control plane. Hover any underlined term in the app for an inline definition.</p>
+        <p>Plain-English definitions for the terms you'll see across the AegenSynq platform. Hover any underlined term in the app for an inline definition.</p>
       </div>
       <button class="glossary-close" onclick="closeGlossary()">Close ✕</button>
     </div>
@@ -5133,14 +5231,44 @@ const tourSteps = [
   {
     target: '.brand',
     view: 'overview',
-    title: 'AegenSynq · Control Plane',
-    body: 'You\'re inside a working simulation of AegenSynq\'s control plane. Every screen here is what a real Phase 1 customer sees.'
+    title: 'Inside AegenSynq',
+    body: 'You\'re inside a working simulation of the AegenSynq platform — the intelligence layer that sits between your data and your leadership. Every screen here is what a real Phase 1 customer sees. <em>The tour takes about three minutes.</em>'
   },
   {
     target: '.tenant-switch',
     view: 'overview',
-    title: 'Three tenant profiles · One platform',
-    body: 'Click the tenant name to switch between <em>three drastically different organizations</em> — a global enterprise, a mid-market company, and a public health agency on paper and legacy systems. <em>The same AegenSynq</em>, completely different data realities. Try it after the tour.'
+    title: 'Three tenants · Three customer archetypes',
+    body: 'AegenSynq serves three customer profiles: <em>mid-market</em> (Northwind, 480 employees, SaaS-native but fragmented), <em>enterprise</em> (Meridian, 8,500 employees, four BUs and a recent acquisition), and <em>government</em> (Riverside County Health, 1,200 employees, paper intake plus legacy systems). The same platform handles all three. Try the switcher after the tour.'
+  },
+  {
+    target: '#northwindContext',
+    view: 'overview',
+    title: 'Customer journey · Phase 1 onboarding',
+    body: 'This panel tells the journey for each tenant — what they had before AegenSynq, what onboarding looked like, and what intelligence they get today. <em>Northwind onboarded in 14 days. Meridian unified four BUs and an acquisition in 4 weeks. Riverside got from paper to intelligence in 12 weeks.</em> Switch tenants after the tour to see all three customer journeys.'
+  },
+  {
+    target: '#scanBtn',
+    view: 'overview',
+    title: 'Run a live scan',
+    body: 'Click <em>Run Scan</em> to watch the four metric tiles transform from your <em>baseline reality</em> — the records, conflicts, questions, and dollar leakage already sitting in your stack — into <em>resolved value</em> AegenSynq has surfaced and standardized at the source. <em>The numbers stay the same. The story changes.</em>'
+  },
+  {
+    target: '#ic1',
+    view: 'overview',
+    title: 'The conflict no single AI sees',
+    body: 'Project Atlas: Jira says <em>"On Track."</em> NetSuite shows 80% of budget burned on 60% of work. GitHub shows velocity collapsing. <em>No single tool\'s AI can see this</em> — only a persistent layer that holds all five data models simultaneously and knows when they disagree.'
+  },
+  {
+    target: '.dq-summary',
+    view: 'decisions',
+    title: 'Decision Queue · The governance moat',
+    body: 'Every AI action is gated for human approval. Status overrides, entity merges, schema mappings, compliance archives — all routed here with full evidence and an immutable audit trail. <em>1,247 duplicate contacts identified at 94% confidence, 23 edge cases routed for individual review.</em> AegenSynq doesn\'t move data without permission.'
+  },
+  {
+    target: '#viewIntel .intel-card:first-child',
+    view: 'intel',
+    title: 'Cross-system intelligence',
+    body: 'Project Helios depends on Atlas. Atlas has a hidden client SLA in Salesforce. Atlas is at risk. <em>Therefore Helios — currently marked Green — is structurally at risk through a chain that crosses three systems.</em> No single tool can see this. AegenSynq does, automatically, every cycle.'
   },
   {
     target: '#navAnswers',
@@ -5155,58 +5283,34 @@ const tourSteps = [
     body: 'The first question: <em>"Is the Customer Portal Refresh really on track for Q2?"</em> AegenSynq says <em>refuted</em> with 92% confidence. Click the card to expand the actual Slack message that landed in the VP\'s DMs. <em>No new interface for the leader to learn — answers go where the work already happens.</em>'
   },
   {
-    target: '.sidebar .side-section:nth-child(2)',
-    view: 'overview',
-    title: 'Connected via MCP',
-    body: 'Five enterprise systems connected through Model Context Protocol — the same standard Anthropic introduced and OpenAI, Google, and Microsoft now support. <em>One protocol, many tools.</em> No custom connectors per platform.'
-  },
-  {
-    target: '#scanBtn',
-    view: 'overview',
-    title: 'Run a live scan',
-    body: 'Click <em>Run Scan</em> to watch the four tiles transform from your <em>baseline reality</em> — the records, conflicts, questions, and dollar leakage that already exist in your stack — into <em>resolved value</em> AegenSynq has surfaced and standardized in your source systems. <em>The numbers stay the same. The story changes.</em>'
-  },
-  {
-    target: '#ic1',
-    view: 'overview',
-    title: 'The conflict no single AI sees',
-    body: 'Project Atlas: Jira says <em>"On Track."</em> NetSuite says 80% of budget burned on 60% of work. GitHub shows velocity collapsing. <em>No single tool\'s AI can see this</em> — only a persistent layer that holds all five data models simultaneously.'
-  },
-  {
-    target: '.dq-summary',
-    view: 'decisions',
-    title: 'Decision Queue · Human in the loop',
-    body: 'Every AI action is gated for human approval. Status overrides, entity merges, schema mappings, compliance archives — all routed here with full evidence. <em>This is the governance moat.</em> AegenSynq doesn\'t move data without permission, and every decision is logged to an immutable audit trail.'
-  },
-  {
-    target: '#viewDecisions .dcard.routine',
-    view: 'decisions',
-    title: 'Batch entity resolution',
-    body: 'AI matched <em>1,247 duplicate contacts</em> across Jira, Salesforce, and Slack. 1,224 are above the 90% confidence threshold and ready to auto-approve. 23 edge cases route for individual review. <em>This is cleanup that\'s structurally impossible inside any single tool.</em>'
-  },
-  {
-    target: '#viewIntel .intel-card:first-child',
-    view: 'intel',
-    title: 'Intelligence only the unified layer can see',
-    body: 'Project Helios depends on Atlas (Jira). Atlas has a hidden client SLA in Salesforce. Atlas is at risk. <em>Therefore Helios — currently marked Green — is structurally at risk through a chain that crosses three systems.</em> No single tool can see this. AegenSynq does, automatically.'
-  },
-  {
-    target: '#viewIntel .intel-card:nth-child(4)',
-    view: 'intel',
-    title: 'Cost anomaly · Auto root-cause',
-    body: 'NetSuite flagged a 31% MoM compute spike. AegenSynq cross-referenced AWS billing tags, Datadog telemetry, and Jira deploys to find the root cause: <em>Atlas test environment over-provisioned 4x</em>. $48K/yr recoverable. Four systems correlated automatically.'
-  },
-  {
     target: '.canonical',
     view: 'schema',
     title: 'The canonical schema',
-    body: 'Every system\'s data is mapped through AI-assisted field mapping into one normalized model. Five sources for "status" — <em>"WIP," "in-progress," "Active"</em> — collapse into one canonical value. The platform learns from every human correction.'
+    body: 'Every system\'s data is mapped through AI-assisted field mapping into one normalized model. Five sources for "status" — <em>"WIP," "in-progress," "Active"</em> — collapse into one canonical value. The platform learns from every human correction and writes cleaned values back to source systems with approval.'
   },
   {
     target: '.feed',
     view: 'activity',
-    title: 'Compounding intelligence',
-    body: 'Everything AegenSynq has done across the tenant in the last 7 days — cleaned, conflicted, learned. <em>This is the difference from a one-shot agent.</em> Memory between runs. Patterns over time. Intelligence that compounds rather than resets.'
+    title: 'Compounding intelligence · Activity feed',
+    body: 'Everything AegenSynq has done across the tenant in the last 7 days — cleaned, conflicted, learned, written back to source systems. <em>This is the difference from a one-shot AI agent.</em> Memory between runs. Patterns over time. Intelligence that compounds rather than resets.'
+  },
+  {
+    target: '#navSavings',
+    view: 'savings',
+    title: 'Cost Savings · ROI proven',
+    body: 'Every dollar of leakage AegenSynq pays back, line by line. <em>For Northwind, $480K/year recovered against $54K platform cost — 8.9× ROI.</em> Open the line items: SaaS license tier drops, employee hours saved, compliance avoidance, vendor consolidation. <em>This is the conversation a CFO actually wants to have.</em>'
+  },
+  {
+    target: '#navCompetitive',
+    view: 'competitive',
+    title: 'Competitive Position · The moat made visible',
+    body: 'Across <em>18 evaluated capabilities</em>, AegenSynq scores <em>18/18.</em> The next closest competitor — Microsoft Copilot, Salesforce Einstein — scores <em>4/18 with 6 partial.</em> ChatGPT and MCP-based agents score 0/18. DIY warehouses (Fivetran + Snowflake + dbt) score 2/18. <em>The moat is structural, not temporary.</em>'
+  },
+  {
+    target: '#navFaq',
+    view: 'faq',
+    title: 'The rest of the story · Investor FAQ',
+    body: 'Eight questions investors typically ask after a demo: how AegenSynq is differentiated, why now, what it costs vs DIY, the Phase 1 → Phase 2 flywheel, market size, buyer profile, why competitors won\'t catch up, the roadmap. <em>All sourced directly from the brief.</em> The tour ends here — switch tenants from the top bar to see how the same platform handles drastically different data realities.'
   }
 ];
 
@@ -5215,6 +5319,7 @@ let tourActive = false;
 
 function startTour(){
   closeWelcome();
+  applyTenant('northwind');
   tourActive = true;
   tourIdx = 0;
   document.getElementById('tourBackdrop').classList.add('active');
@@ -5648,7 +5753,7 @@ const TENANTS = {
     ],
     extraSystems: 12,
 
-    ovSub: 'Enterprise control plane · <b>Meridian Global Industries</b> · 85 of 340 systems · 4 business units · 8,500 employees',
+    ovSub: 'Cross-BU intelligence layer · <b>Meridian Global Industries</b> · 85 of 340 systems · 4 business units · 8,500 employees',
     intelSub: 'Insights that <b>only exist</b> because data is normalized across all 8 systems and 3 BUs',
     actSub: 'Everything AegenSynq has done across <b>Meridian</b> in the last 7 days · cross-BU view',
     dxSub: 'Enterprise governance · Multi-stakeholder approvals · Audit-grade trail · <b>Meridian Global</b>',
@@ -6543,9 +6648,11 @@ function applyTenant(key){
   renderSchema(t);
   renderSavings(t);
   
-  // Riverside-only Phase 0 context panel
-  const rivCtx = document.getElementById('riversideContext');
-  if (rivCtx) rivCtx.style.display = (key === 'riverside') ? 'block' : 'none';
+  // Tenant-specific Phase 0 / Phase 1 onboarding context panel
+  ['northwind','meridian','riverside'].forEach(k => {
+    const el = document.getElementById(k + 'Context');
+    if (el) el.style.display = (key === k) ? 'block' : 'none';
+  });
   
   // close menu
   document.getElementById('tenantMenu').classList.remove('open');
