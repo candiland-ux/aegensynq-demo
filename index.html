@@ -5742,28 +5742,7 @@ body.fullscreen-view .app > .body{grid-template-columns:1fr !important;}
             <div class="meta">Recomputed every sync</div>
           </div>
 
-          <div class="metrics">
-            <div class="metric">
-              <div class="metric-lab">Q2 Portfolio Health</div>
-              <div class="metric-val"><span>B−</span> <span class="delta">↑</span></div>
-              <div class="metric-bar"><div style="width:68%;background:var(--cobalt-bright);"></div></div>
-            </div>
-            <div class="metric">
-              <div class="metric-lab">Resource Utilization</div>
-              <div class="metric-val">94<small>%</small></div>
-              <div class="metric-bar"><div style="width:94%;background:var(--cobalt-bright);"></div></div>
-            </div>
-            <div class="metric">
-              <div class="metric-lab">Projects At Risk</div>
-              <div class="metric-val">3<small>of 47</small></div>
-              <div class="metric-bar"><div style="width:18%;background:var(--amber);"></div></div>
-            </div>
-            <div class="metric">
-              <div class="metric-lab">Strategic Alignment</div>
-              <div class="metric-val">89<small>%</small></div>
-              <div class="metric-bar"><div style="width:89%;background:var(--cobalt-bright);"></div></div>
-            </div>
-          </div>
+          <div class="metrics" id="intelForecasts"></div>
 
         </div>
       </div>
@@ -6614,7 +6593,7 @@ const TENANTS = {
     intelSub: 'Insights that <b>only exist</b> because data is normalized across all 5 systems · Refreshed every sync',
     actSub: 'Everything AegenSynq has done across <b>Northwind Logistics</b> in the last 7 days',
     dxSub: 'Human-in-the-loop governance · Every AI action gated for review · <b>Northwind Logistics</b>',
-    schemaSub: 'AI-mapped fields from 5 source systems into one normalized model · <b>94% avg confidence</b>',
+    schemaSub: 'AI-mapped fields from 6 source systems into one normalized model · <b>92% avg confidence</b>',
 
     insights: [
       { sev:'critical', tag:'Critical · Conflict', title:'Project Atlas — status conflict across systems.',
@@ -6637,7 +6616,7 @@ const TENANTS = {
     decisions: {
       reviewTime: '~12 minutes',
       lastReviewed: 'Maya Chen, 6 days ago',
-      total: 12, attention: 3, routine: 9,
+      total: 12, critical: 1, attention: 3, routine: 8,
       items: [
         { sev:'critical', icon:'!',
           question:'Should we update Project Atlas\'s status from <em>"On Track"</em> to <em>"At Risk"</em>?',
@@ -6733,6 +6712,13 @@ const TENANTS = {
         body:'AegenSynq cross-referenced your access management (Okta), code repos (GitHub), change management (Jira), and ticketing (Zendesk) against your SOC 2 Type II control framework. Found <strong>3 control gaps</strong> with <strong>9 weeks until your audit window opens</strong>: <strong>47 stale Okta access grants past the 90-day review threshold</strong>, <strong>12 production deploys missing change management approval in Jira</strong>, and <strong>8 vendor risk assessments overdue</strong>. Auditors typically flag any gap above 5 records. <em>Approving the cleanup decisions in the queue closes all 3 gaps in 6 days — 8 weeks before the auditors land.</em>',
         viz:'<div class="root-cause"><div class="rc-row"><span class="from">Okta</span><span class="what">Stale access grants past 90-day review</span><span class="delta">47 records</span></div><div class="rc-row"><span class="from">Jira</span><span class="what">Production deploys missing CM approval</span><span class="delta">12 records</span></div><div class="rc-row"><span class="from">Vendor mgmt</span><span class="what">Risk assessments overdue</span><span class="delta">8 records</span></div><div class="rc-row"><span class="from">Audit window</span><span class="what">SOC 2 Type II observation period opens</span><span class="delta">9 weeks</span></div><div class="rc-row cause"><span class="from">→</span><span class="what">Approve cleanups · close all 3 gaps in 6 days</span><span class="delta">action</span></div></div>',
         meta:'9 weeks to audit · <b>3 gaps · 6-day cleanup window</b>', cta:'Open' }
+    ],
+
+    forecasts: [
+      { lab:'Q2 Portfolio Health', val:'<span>B−</span> <span class="delta">↑</span>', barPct:68, color:'cobalt-bright' },
+      { lab:'Resource Utilization', val:'94', valSub:'%', barPct:94, color:'cobalt-bright' },
+      { lab:'Projects At Risk', val:'3', valSub:'of 47', barPct:18, color:'amber' },
+      { lab:'Strategic Alignment', val:'89', valSub:'%', barPct:89, color:'cobalt-bright' }
     ],
 
     answers: [
@@ -6849,10 +6835,10 @@ const TENANTS = {
     ],
 
     activityStats: [
-      { lab:'Records Cleaned', val:'18,400' },
-      { lab:'Conflicts Surfaced', val:'12' },
-      { lab:'$ Recovered', val:'$84K', sub:'annualized' },
-      { lab:'Patterns Learned', val:'17' }
+      { lab:'Records Cleaned', val:'18,400', sub:'this week' },
+      { lab:'Conflicts Surfaced', val:'142', sub:'this week' },
+      { lab:'$ Recovered', val:'$480K', sub:'annualized · platform-wide' },
+      { lab:'Patterns Learned', val:'17', sub:'to date' }
     ],
     activity: [
       { sev:'success', icon:'→', when:'30m ago', title:'Standardized 1,420 account names in Salesforce in place.', detail:'Cleaned values written back to source · field: Account.Name · approval-gated', badge:'Write-back' },
@@ -6950,7 +6936,7 @@ const TENANTS = {
     decisions: {
       reviewTime: '~28 minutes',
       lastReviewed: 'Sarah Mendez (PMO Director), 4 days ago',
-      total: 47, attention: 12, routine: 35,
+      total: 47, critical: 2, attention: 13, routine: 32,
       items: [
         { sev:'critical', icon:'!',
           question:'Should we override Project Aurora\'s status from <em>"Green"</em> to <em>"At Risk"</em>?',
@@ -7050,6 +7036,13 @@ const TENANTS = {
         body:'AegenSynq cross-referenced your financial records across NetSuite, Salesforce, and Workday against the SOX 7-year retention framework. Found <strong>47,200 records past retention with no legal hold across 4 BUs</strong>: <strong>28,400 NetSuite financial transactions</strong>, <strong>14,200 Salesforce closed deals</strong>, and <strong>4,600 Workday termination records</strong>. Auditors land in 8 weeks. <em>Approving the archive plan in the Decisions queue closes the gap in 6 days. Without it, audit prep takes 8+ weeks of manual cross-BU reconciliation — and the risk of a mid-tier finding ($180K avg) materially increases.</em>',
         viz:'<div class="root-cause"><div class="rc-row"><span class="from">NetSuite</span><span class="what">Financial txns past 7-year retention</span><span class="delta">28,400 records</span></div><div class="rc-row"><span class="from">Salesforce</span><span class="what">Closed deals past retention</span><span class="delta">14,200 records</span></div><div class="rc-row"><span class="from">Workday</span><span class="what">Termination records past retention</span><span class="delta">4,600 records</span></div><div class="rc-row"><span class="from">Audit window</span><span class="what">SOX auditors land</span><span class="delta">8 weeks</span></div><div class="rc-row cause"><span class="from">→</span><span class="what">Approve archive plan · close all gaps in 6 days</span><span class="delta">action</span></div></div>',
         meta:'8 weeks to SOX audit · <b>47,200 records · 6-day cleanup</b>', cta:'Open' }
+    ],
+
+    forecasts: [
+      { lab:'Cross-BU Portfolio Health', val:'<span>C+</span> <span class="delta">↑</span>', barPct:62, color:'cobalt-bright' },
+      { lab:'Resource Utilization', val:'91', valSub:'% (cross-BU)', barPct:91, color:'cobalt-bright' },
+      { lab:'Projects At Risk', val:'12', valSub:'of 124', barPct:24, color:'amber' },
+      { lab:'BU Strategic Alignment', val:'86', valSub:'%', barPct:86, color:'cobalt-bright' }
     ],
 
     answers: [
@@ -7169,10 +7162,10 @@ const TENANTS = {
     ],
 
     activityStats: [
-      { lab:'Records Cleaned', val:'240,800' },
-      { lab:'Conflicts Surfaced', val:'94' },
-      { lab:'$ Recovered', val:'$2.4M', sub:'annualized' },
-      { lab:'Patterns Learned', val:'142' }
+      { lab:'Records Cleaned', val:'240,800', sub:'this week' },
+      { lab:'Conflicts Surfaced', val:'3,800', sub:'this week' },
+      { lab:'$ Recovered', val:'$4.2M', sub:'annualized · platform-wide' },
+      { lab:'Patterns Learned', val:'142', sub:'to date' }
     ],
     activity: [
       { sev:'success', icon:'→', when:'45m ago', title:'Standardized 12,400 cost center codes across NetSuite, Workday, and Coupa in place.', detail:'Cleaned values written back to all three source systems · approval-gated · cross-BU consistency restored', badge:'Write-back' },
@@ -7239,7 +7232,7 @@ const TENANTS = {
     intelSub: 'Cross-department insights that <b>only exist</b> after digitization unifies paper, legacy DB, and Tyler ERP',
     actSub: 'Everything AegenSynq has done across <b>Riverside County Health</b> in the last 7 days · Digitization active',
     dxSub: 'Government governance · HIPAA-aware approvals · Audit-grade · <b>Riverside County Health</b>',
-    schemaSub: 'AI-mapped fields from 6 sources (paper, legacy DB, Tyler) into one model · <b>89% avg confidence</b>',
+    schemaSub: 'AI-mapped fields from 6 sources (paper, legacy DB, Tyler) into one model · <b>91% avg confidence</b>',
 
     insights: [
       { sev:'critical', tag:'Critical · Revenue', title:'142 patient visits not flowing from intake to billing.',
@@ -7262,7 +7255,7 @@ const TENANTS = {
     decisions: {
       reviewTime: '~16 minutes',
       lastReviewed: 'Dr. Patricia Ellis (Health Director), 5 days ago',
-      total: 18, attention: 5, routine: 13,
+      total: 18, critical: 1, attention: 5, routine: 12,
       items: [
         { sev:'critical', icon:'!',
           question:'Should we auto-link 142 unbilled patient visits to Tyler ERP for invoicing?',
@@ -7362,6 +7355,13 @@ const TENANTS = {
         body:'AegenSynq cross-referenced your HRSA Q2 reporting requirements against current patient demographic completeness across Oracle, Epic, and OCR\'d paper intake. <strong>4,200 patient records are missing required fields</strong> (race, ethnicity, primary language). <strong>3,100 (74%) are auto-fillable</strong> from prior records and historical paper intake; <strong>1,100 require patient outreach</strong> at next touchpoint. Without action, HRSA penalty risk is <strong>73%</strong> at current data quality (avg penalty ~$180K). <em>With auto-fill approval today, risk drops to 9% and the cleanup completes in 4 business days — 10 days before deadline.</em>',
         viz:'<div class="root-cause"><div class="rc-row"><span class="from">Oracle 11g</span><span class="what">Records missing race/ethnicity/language</span><span class="delta">4,200 records</span></div><div class="rc-row"><span class="from">Auto-fill source</span><span class="what">Recoverable from prior records + paper</span><span class="delta">3,100 (74%)</span></div><div class="rc-row"><span class="from">Outreach needed</span><span class="what">Patient touchpoint required</span><span class="delta">1,100 (26%)</span></div><div class="rc-row"><span class="from">HRSA deadline</span><span class="what">Q2 report submission</span><span class="delta">14 days</span></div><div class="rc-row cause"><span class="from">→</span><span class="what">Approve auto-fill · risk drops 73% → 9%</span><span class="delta">action</span></div></div>',
         meta:'14 days to HRSA deadline · <b>73% → 9% penalty risk if approved</b>', cta:'Open' }
+    ],
+
+    forecasts: [
+      { lab:'Patient Care Coverage', val:'96', valSub:'%', barPct:96, color:'cobalt-bright' },
+      { lab:'Billing Capture Rate', val:'88', valSub:'% ↑ from 71%', barPct:88, color:'cobalt-bright' },
+      { lab:'HIPAA Compliance Posture', val:'<span>B</span> <span class="delta">↑</span>', barPct:78, color:'cobalt-bright' },
+      { lab:'Visits at Risk', val:'142', valSub:'of 12,400', barPct:11, color:'amber' }
     ],
 
     answers: [
@@ -7481,9 +7481,9 @@ const TENANTS = {
 
     activityStats: [
       { lab:'Records Digitized', val:'1,840', sub:'this week' },
-      { lab:'Conflicts Surfaced', val:'4,200' },
-      { lab:'Compliance Risk Avoided', val:'$180K', sub:'grant penalty' },
-      { lab:'Patterns Learned', val:'8' }
+      { lab:'Conflicts Surfaced', val:'4,200', sub:'this week · onboarding burst' },
+      { lab:'$ Recovered', val:'$880K', sub:'annualized · platform-wide' },
+      { lab:'Patterns Learned', val:'8', sub:'to date' }
     ],
     activity: [
       { sev:'success', icon:'→', when:'30m ago', title:'Standardized 4,200 diagnosis codes back to Oracle 11g in place.', detail:'Legacy DB updated with cleaned ICD-10 values · approval-gated · improves billing claim acceptance rate', badge:'Write-back' },
@@ -7592,7 +7592,7 @@ function renderDecisions(t){
     <div class="dq-banner">
       <div class="dq-banner-l">
         <h3>This week's review · <em>~${d.reviewTime}</em></h3>
-        <p><b>${d.total} items pending.</b> ${d.attention} need your attention. ${d.routine} are routine. <span class="t" data-tip="Routine items are pre-vetted by AegenSynq based on rules you've already approved. They're safe to bulk-approve.">Routine items</span> can be bulk-approved. Last reviewed by <b>${d.lastReviewed}</b>.</p>
+        <p><b>${d.total} items pending.</b> ${d.critical || 0} critical · ${d.attention} need your attention · ${d.routine} routine. <span class="t" data-tip="Routine items are pre-vetted by AegenSynq based on rules you've already approved. They're safe to bulk-approve.">Routine items</span> can be bulk-approved. Last reviewed by <b>${d.lastReviewed}</b>.</p>
       </div>
       <div class="dq-banner-r">
         <div class="big">${d.total}<small>Pending</small></div>
@@ -7650,6 +7650,16 @@ function renderIntel(t){
       </div>
     </div>
   `).join('');
+  // Render continuous forecasts
+  if (t.forecasts) {
+    document.getElementById('intelForecasts').innerHTML = t.forecasts.map(f => `
+      <div class="metric">
+        <div class="metric-lab">${f.lab}</div>
+        <div class="metric-val">${f.val}${f.valSub ? `<small>${f.valSub}</small>` : ''}</div>
+        <div class="metric-bar"><div style="width:${f.barPct}%;background:var(--${f.color || 'cobalt-bright'});"></div></div>
+      </div>
+    `).join('');
+  }
 }
 
 function renderActivity(t){
