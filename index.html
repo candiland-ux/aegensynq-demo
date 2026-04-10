@@ -1573,7 +1573,7 @@ body{
   position:relative;
 }
 .tenant-switch-btn.pulse::after{
-  content:'click to switch tenants';
+  content:'tap to switch customer profile';
   position:absolute;
   top:calc(100% + 10px);
   left:50%;
@@ -4612,7 +4612,7 @@ body.fullscreen-view .app > .body{grid-template-columns:1fr !important;}
       AegenSynq searches every connected system, <strong>confirms or refutes what someone entered manually</strong>, and delivers the answer back into the tool the leader was already using. Leaders never log into AegenSynq — <strong>answers go where the work already happens.</strong> Cleaning the data is what makes the answers trustworthy.
     </p>
     <p class="welcome-nav">
-      Use the top bar to switch between three tenant profiles and see how the same platform handles drastically different data realities.
+      Use the top bar to switch between three customer profiles and see how the same platform handles drastically different data realities.
     </p>
     <div class="welcome-btns">
       <button class="btn btn-pri" onclick="startTour()">Guided Tour · 14 steps</button>
@@ -4640,7 +4640,7 @@ body.fullscreen-view .app > .body{grid-template-columns:1fr !important;}
         <svg viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.2"/></svg>
       </button>
       <div class="tenant-menu" id="tenantMenu">
-        <div class="tenant-menu-h">Switch Tenant · Demo Profiles</div>
+        <div class="tenant-menu-h">Switch Customer Profile</div>
         <div class="tenant-opt" data-tenant="meridian" onclick="applyTenant('meridian')">
           <div>
             <div class="name">Meridian Global Industries</div>
@@ -4844,7 +4844,7 @@ body.fullscreen-view .app > .body{grid-template-columns:1fr !important;}
             <div class="riv-context-head">
               <div class="riv-context-label">— Mid-market velocity · Northwind Logistics —</div>
               <h3>How Northwind went from <em>fragmented</em> to clear in 4 weeks.</h3>
-              <p>Northwind is the mid-market tenant in this demo because it represents the segment already on modern SaaS but drowning in cross-tool fragmentation. Before AegenSynq, Maya Chen (CFO) had 22 connected SaaS systems out of 145 in the stack, status updates that did not match across tools, and vendor sprawl no one was tracking. The intelligence shown above and the answers the platform delivers below were standing up <strong>4 weeks after kickoff.</strong> This is what mid-market velocity looks like — no digitization step required, just connect, clean, and run.</p>
+              <p>Northwind is the mid-market customer profile in this demo because it represents the segment already on modern SaaS but drowning in cross-tool fragmentation. Before AegenSynq, Maya Chen (CFO) had 22 connected SaaS systems out of 145 in the stack, status updates that did not match across tools, and vendor sprawl no one was tracking. The intelligence shown above and the answers the platform delivers below were standing up <strong>4 weeks after kickoff.</strong> This is what mid-market velocity looks like — no digitization step required, just connect, clean, and run.</p>
             </div>
             <div class="riv-grid">
               <div class="riv-col before">
@@ -4893,7 +4893,7 @@ body.fullscreen-view .app > .body{grid-template-columns:1fr !important;}
             <div class="riv-context-head">
               <div class="riv-context-label">— Enterprise complexity · Meridian Global Industries —</div>
               <h3>How Meridian unified <em>4 BUs and a recent acquisition</em> in 8 weeks.</h3>
-              <p>Meridian is the enterprise tenant in this demo because it represents the multi-BU complexity that platform AI vendors structurally cannot solve. Each of Meridian's four business units (BU-East, BU-West, BU-Henderson from the recent acquisition, BU-Central) ran its own SaaS contracts, its own Jira and Salesforce instances, its own Datadog purchases. No one had a cross-BU view. AegenSynq gave Linda Acharya (CFO) <strong>one canonical model across all four BUs — including the Henderson M&amp;A integration — in 8 weeks.</strong></p>
+              <p>Meridian is the enterprise customer profile in this demo because it represents the multi-BU complexity that platform AI vendors structurally cannot solve. Each of Meridian's four business units (BU-East, BU-West, BU-Henderson from the recent acquisition, BU-Central) ran its own SaaS contracts, its own Jira and Salesforce instances, its own Datadog purchases. No one had a cross-BU view. AegenSynq gave Linda Acharya (CFO) <strong>one canonical model across all four BUs — including the Henderson M&amp;A integration — in 8 weeks.</strong></p>
             </div>
             <div class="riv-grid">
               <div class="riv-col before">
@@ -4942,7 +4942,7 @@ body.fullscreen-view .app > .body{grid-template-columns:1fr !important;}
             <div class="riv-context-head">
               <div class="riv-context-label">— Government modernization · Riverside County Health Services —</div>
               <h3>How Riverside got from <em>paper</em> to intelligence in 16 weeks.</h3>
-              <p>Riverside is the government tenant in this demo precisely because it represents the <strong>forced digitization</strong> market the brief calls out. Before AegenSynq, Riverside ran a 1990s data stack — paper intake, Oracle 11g without an API, Tyler Munis ERP, and three department-level Excel grant trackers. There was no canonical patient ID. The cross-system intelligence shown above and the answers the platform delivers below are only possible <strong>because the digitization itself was the foundation.</strong> This is what differentiates AegenSynq from SaaS-on-SaaS overlays — it can bring legacy organizations into the modern data world before running intelligence on top.</p>
+              <p>Riverside is the government customer profile in this demo precisely because it represents the <strong>forced digitization</strong> market the brief calls out. Before AegenSynq, Riverside ran a 1990s data stack — paper intake, Oracle 11g without an API, Tyler Munis ERP, and three department-level Excel grant trackers. There was no canonical patient ID. The cross-system intelligence shown above and the answers the platform delivers below are only possible <strong>because the digitization itself was the foundation.</strong> This is what differentiates AegenSynq from SaaS-on-SaaS overlays — it can bring legacy organizations into the modern data world before running intelligence on top.</p>
             </div>
             <div class="riv-grid">
               <div class="riv-col before">
@@ -6159,7 +6159,7 @@ function demoNote(msg){
 const viewHelp = {
   overview: {
     title: 'Data Health · Overview',
-    body: '<p>This is the home view for each tenant. The four metric tiles show the <b>baseline reality</b> when you first arrive — data fragmented, conflicts unresolved, leakage uncalculated. Click <b>Run Scan</b> to watch the same numbers transform into <b>resolved value</b> as AegenSynq runs across all connected systems.</p><p>Below the tiles, the <b>customer journey panel</b> shows how this specific tenant onboarded (Before → Onboarding → Active intelligence). The cards below that are the actual <b>cross-system insights</b> AegenSynq surfaced — these are conflicts no single tool can see because they cross system boundaries.</p>'
+    body: '<p>This is the home view for each customer profile. The four metric tiles show the <b>baseline reality</b> when you first arrive — data fragmented, conflicts unresolved, leakage uncalculated. Click <b>Run Scan</b> to watch the same numbers transform into <b>resolved value</b> as AegenSynq runs across all connected systems.</p><p>Below the tiles, the <b>customer journey panel</b> shows how this specific customer profile onboarded (Before → Onboarding → Active intelligence). The cards below that are the actual <b>cross-system insights</b> AegenSynq surfaced — these are conflicts no single tool can see because they cross system boundaries.</p>'
   },
   answers: {
     title: 'Answers',
@@ -6179,11 +6179,11 @@ const viewHelp = {
   },
   schema: {
     title: 'Canonical Schema',
-    body: '<p>The <b>foundation everything else is built on</b>. AegenSynq ingests fields from every connected system on the left and right, then maps them into a single canonical entity in the middle (Projects for SaaS tenants, Patients for healthcare). Each field shows a <b>confidence score</b> — high-confidence mappings are auto-applied, lower-confidence ones route to the Decisions Queue.</p><p>The <b>Value Harmonization</b> section below shows how 5 different source values for the same conceptual field (e.g. Jira "In Progress" + Salesforce "in-progress" + GitHub "WIP") all collapse to a single canonical value (e.g. "active"). This is how cross-system queries become possible.</p>'
+    body: '<p>The <b>foundation everything else is built on</b>. AegenSynq ingests fields from every connected system on the left and right, then maps them into a single canonical entity in the middle (Projects for business customer profiles, Patients for healthcare). Each field shows a <b>confidence score</b> — high-confidence mappings are auto-applied, lower-confidence ones route to the Decisions Queue.</p><p>The <b>Value Harmonization</b> section below shows how 5 different source values for the same conceptual field (e.g. Jira "In Progress" + Salesforce "in-progress" + GitHub "WIP") all collapse to a single canonical value (e.g. "active"). This is how cross-system queries become possible.</p>'
   },
   activity: {
     title: 'Activity Feed',
-    body: '<p>Everything AegenSynq has done across this tenant in the last 7 days. Each row shows what happened, when, what system it affected, and a badge for the action type (Write-back, Conflict, Pattern Learning, Auto-action, etc.).</p><p>This is the <b>"compounding intelligence"</b> proof point — AegenSynq has memory between runs. It learns from every approval, every correction, every confirmed pattern. The activity feed shows that learning happening in real time. Competitors that pull raw data on demand cannot do this — they have no historical context.</p>'
+    body: '<p>Everything AegenSynq has done across this customer profile in the last 7 days. Each row shows what happened, when, what system it affected, and a badge for the action type (Write-back, Conflict, Pattern Learning, Auto-action, etc.).</p><p>This is the <b>"compounding intelligence"</b> proof point — AegenSynq has memory between runs. It learns from every approval, every correction, every confirmed pattern. The activity feed shows that learning happening in real time. Competitors that pull raw data on demand cannot do this — they have no historical context.</p>'
   },
   conflict: {
     title: 'Conflict Investigation',
@@ -6191,7 +6191,7 @@ const viewHelp = {
   },
   faq: {
     title: 'Investor Context',
-    body: '<p>Two sections combined: the <b>competitive position</b> (18-capability matrix scoring AegenSynq vs platform AI, general-purpose AI agents, and the DIY warehouse stack) and the <b>investor FAQ</b> (8 questions investors ask after walking through this demo, sourced from the AegenSynq Business Partner Brief).</p><p>This view exists for investors and board members who need the business context — differentiation, market timing, cost vs DIY, the structural moat, the roadmap. Tenant-agnostic; the same content appears regardless of which tenant is selected.</p>'
+    body: '<p>Two sections combined: the <b>competitive position</b> (18-capability matrix scoring AegenSynq vs platform AI, general-purpose AI agents, and the DIY warehouse stack) and the <b>investor FAQ</b> (8 questions investors ask after walking through this demo, sourced from the AegenSynq Business Partner Brief).</p><p>This view exists for investors and board members who need the business context — differentiation, market timing, cost vs DIY, the structural moat, the roadmap. Tenant-agnostic; the same content appears regardless of which customer profile is selected.</p>'
   }
 };
 function openHelp(viewName){
@@ -6354,13 +6354,13 @@ const tourSteps = [
     target: '.brand',
     view: 'overview',
     title: 'Inside AegenSynq',
-    body: 'You\'re inside a working simulation of the AegenSynq platform. This is <em>Northwind Logistics</em>, a mid-market tenant. Takes about three minutes.'
+    body: 'You\'re inside a working simulation of the AegenSynq platform. This is <em>Northwind Logistics</em>, a mid-market customer profile. Takes about three minutes.'
   },
   {
     target: '.tenant-switch',
     view: 'overview',
-    title: 'Three tenants · Three archetypes',
-    body: 'AegenSynq serves <em>mid-market</em>, <em>enterprise</em>, and <em>government</em> customers. Switch tenants after the tour to see how the same platform handles three very different data realities.'
+    title: 'Three customers · Three archetypes',
+    body: 'AegenSynq serves <em>mid-market</em>, <em>enterprise</em>, and <em>government</em> customers. Switch customer profiles after the tour to see how the same platform handles three very different data realities.'
   },
   {
     target: '#northwindContext',
@@ -6432,7 +6432,7 @@ const tourSteps = [
     target: '#viewFaq .faq-item',
     view: 'faq',
     title: 'The rest of the story',
-    body: 'Eight investor questions follow — differentiation, timing, cost vs DIY, roadmap. Tour ends here. <em>Switch tenants to see Meridian and Riverside.</em>'
+    body: 'Eight investor questions follow — differentiation, timing, cost vs DIY, roadmap. Tour ends here. <em>Switch customer profiles to see Meridian and Riverside.</em>'
   }
 ];
 
