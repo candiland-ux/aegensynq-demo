@@ -2467,7 +2467,7 @@ body{
   color:var(--text-3);
 }
 
-.verdict{
+.answer-card .verdict{
   text-align:right;
   white-space:nowrap;
   flex-shrink:0;
@@ -5080,8 +5080,8 @@ body.fullscreen-view .app > .body{grid-template-columns:1fr !important;}
       <div class="view" id="viewConflict">
         <div class="view-head">
           <div>
-            <div class="view-title">Project Atlas · Conflict Investigation <button class="help-btn" onclick="openHelp('conflict')" title="What is this view?">?</button></div>
-            <div class="view-sub" id="confSub">Cross-system evidence for <b>ATL-1142</b> · Initiative: Customer Portal Refresh · Owner: Maya Chen</div>
+            <div class="view-title"><span id="confTitle">Conflict Investigation</span> <button class="help-btn" onclick="openHelp('conflict')" title="What is this view?">?</button></div>
+            <div class="view-sub" id="confSub"></div>
           </div>
           <button class="btn btn-ghost" onclick="goView('overview')">← Back</button>
         </div>
@@ -5090,86 +5090,17 @@ body.fullscreen-view .app > .body{grid-template-columns:1fr !important;}
           <div class="verdict">
             <div>
               <div class="verdict-tag">⚠ AegenSynq Verdict · Independent of human-entered status</div>
-              <h2>Status: <span style="color:var(--red);">At Risk</span> &nbsp;·&nbsp; Confidence: 92%</h2>
-              <p>
-                Three independent signals from three different systems contradict the manually-entered <em>"On Track"</em> status in Jira. Budget burn has outpaced work complete by 20 percentage points. Engineering velocity has dropped 22% over two sprints. Two critical dependencies are blocked. <strong>Override the human status with the data verdict.</strong>
-              </p>
+              <h2 id="confVerdictH"></h2>
+              <p id="confVerdictP"></p>
             </div>
-            <div class="verdict-actions">
-              <button class="btn btn-pri" onclick="demoNote('Override Status would flip the project from On Track → At Risk in Jira, notify the owner, and log to the audit trail.')">Override Status</button>
-              <button class="btn btn-ghost" onclick="demoNote('Notify Owner would send a Slack DM to Maya Chen with the full evidence trail.')">Notify Owner</button>
-            </div>
+            <div class="verdict-actions" id="confVerdictActions"></div>
           </div>
 
-          <div class="evidence">
-            <div class="ev-col">
-              <div class="ev-head">
-                <div class="src">Jira <small>Source of human-entered status</small></div>
-                <div class="pill green">On Track</div>
-              </div>
-              <div class="ev-body">
-                <div class="ev-row"><span class="k">Status</span><span class="v good">Green</span></div>
-                <div class="ev-row"><span class="k">Last update</span><span class="v">12 days ago</span></div>
-                <div class="ev-row"><span class="k">Updated by</span><span class="v">M. Chen</span></div>
-                <div class="ev-row"><span class="k">Sprint velocity</span><span class="v bad">−22%</span></div>
-                <div class="ev-row"><span class="k">Open blockers</span><span class="v bad">2 critical</span></div>
-                <div class="ev-row"><span class="k">Tickets / sprint</span><span class="v">14 → 11</span></div>
-              </div>
-            </div>
-
-            <div class="ev-col">
-              <div class="ev-head">
-                <div class="src">NetSuite <small>Source of truth: financials</small></div>
-                <div class="pill red">Over-burn</div>
-              </div>
-              <div class="ev-body">
-                <div class="ev-row"><span class="k">Budget allocated</span><span class="v">$1.2M</span></div>
-                <div class="ev-row"><span class="k">Budget spent</span><span class="v bad">$960K · 80%</span></div>
-                <div class="ev-row"><span class="k">Work complete</span><span class="v bad">60%</span></div>
-                <div class="ev-row"><span class="k">Burn variance</span><span class="v bad">+20pts</span></div>
-                <div class="ev-row"><span class="k">Forecast EAC</span><span class="v bad">$1.6M</span></div>
-                <div class="ev-row"><span class="k">Cost overrun</span><span class="v bad">$400K projected</span></div>
-              </div>
-            </div>
-
-            <div class="ev-col">
-              <div class="ev-head">
-                <div class="src">GitHub + Slack <small>Source of truth: execution</small></div>
-                <div class="pill amber">Slowing</div>
-              </div>
-              <div class="ev-body">
-                <div class="ev-row"><span class="k">Commits / week</span><span class="v bad">42 → 28</span></div>
-                <div class="ev-row"><span class="k">PRs merged</span><span class="v bad">−35%</span></div>
-                <div class="ev-row"><span class="k">Open PRs (stale)</span><span class="v bad">7</span></div>
-                <div class="ev-row"><span class="k">Slack #atlas msgs</span><span class="v">+2.1× (escalation)</span></div>
-                <div class="ev-row"><span class="k">"Blocked" mentions</span><span class="v bad">14 last week</span></div>
-                <div class="ev-row"><span class="k">Engineer churn</span><span class="v bad">1 of 6</span></div>
-              </div>
-            </div>
-          </div>
+          <div class="evidence" id="confEvidence"></div>
 
           <div class="timeline">
             <div class="timeline-h">Detection timeline · How AegenSynq surfaced this</div>
-            <div class="tl-event info">
-              <div class="when">14d ago</div><div class="dot"></div>
-              <div class="what"><b>Baseline established.</b> Project Atlas synced into canonical schema. Initial health score: B+.<small>5,400 records ingested · 23 fields mapped</small></div>
-            </div>
-            <div class="tl-event warn">
-              <div class="when">9d ago</div><div class="dot"></div>
-              <div class="what"><b>First anomaly detected.</b> NetSuite weekly sync flagged budget burn rate exceeding velocity-adjusted forecast by 12 points.<small>Threshold: 10% · Action: monitoring</small></div>
-            </div>
-            <div class="tl-event warn">
-              <div class="when">6d ago</div><div class="dot"></div>
-              <div class="what"><b>Pattern reinforced.</b> GitHub commit velocity dropped 18% across the Atlas repo. Slack #atlas channel showed 2.1× increase in escalation language.<small>Cross-correlation confidence: 76%</small></div>
-            </div>
-            <div class="tl-event bad">
-              <div class="when">2d ago</div><div class="dot"></div>
-              <div class="what"><b>Conflict crystallized.</b> Burn variance crossed 18 points. Velocity decline confirmed for second consecutive sprint. Two critical blockers logged in Jira but project status remained "Green".<small>Confidence: 92% · Severity: Critical</small></div>
-            </div>
-            <div class="tl-event bad">
-              <div class="when">Just now</div><div class="dot"></div>
-              <div class="what"><b>Alert surfaced for human review.</b> AegenSynq routed the conflict to the project owner and the PMO lead with full evidence trail.<small>Awaiting human override decision</small></div>
-            </div>
+            <div id="confTimeline"></div>
           </div>
         </div>
       </div>
@@ -6187,7 +6118,7 @@ const viewHelp = {
   },
   conflict: {
     title: 'Conflict Investigation',
-    body: '<p>The deep-dive view for a specific cross-system conflict. The verdict box at the top shows AegenSynq\'s conclusion (status + confidence). The <b>three evidence columns</b> below show the same project from three different systems\' perspectives — and how they disagree with each other.</p><p>The <b>detection timeline</b> at the bottom shows how AegenSynq surfaced the conflict over 14 days, from baseline through pattern reinforcement to crystallization. This is what an <b>audit-grade investigation trail</b> looks like — every signal, every system, every timestamp.</p>'
+    body: '<p>The deep-dive view for a specific cross-system conflict. The verdict box at the top shows AegenSynq\'s conclusion (status + confidence). The <b>evidence columns</b> below show the same project from multiple systems\' perspectives — and how they disagree with each other.</p><p>The <b>detection timeline</b> at the bottom shows how AegenSynq surfaced the conflict over time, from baseline through pattern reinforcement to crystallization. This is what an <b>audit-grade investigation trail</b> looks like — every signal, every system, every timestamp. The content here adapts to the current customer profile.</p>'
   },
   faq: {
     title: 'Investor Context',
@@ -6720,6 +6651,32 @@ const TENANTS = {
       { lab:'Projects At Risk', val:'3', valSub:'of 47', barPct:18, color:'amber' },
       { lab:'Strategic Alignment', val:'89', valSub:'%', barPct:89, color:'cobalt-bright' }
     ],
+
+    conflict: {
+      title: 'Project Atlas · Conflict Investigation',
+      subtitle: 'Cross-system evidence for <b>ATL-1142</b> · Initiative: Customer Portal Refresh · Owner: Maya Chen',
+      verdictH: 'Status: <span style="color:var(--red);">At Risk</span> &nbsp;·&nbsp; Confidence: 92%',
+      verdictP: 'Three independent signals from three different systems contradict the manually-entered <em>"On Track"</em> status in Jira. Budget burn has outpaced work complete by 20 percentage points. Engineering velocity has dropped 22% over two sprints. Two critical dependencies are blocked. <strong>Override the human status with the data verdict.</strong>',
+      actions: [
+        { label:'Override Status', primary:true, note:'Override Status would flip the project from On Track → At Risk in Jira, notify the owner, and log to the audit trail.' },
+        { label:'Notify Owner', primary:false, note:'Notify Owner would send a Slack DM to Maya Chen with the full evidence trail.' }
+      ],
+      evidence: [
+        { src:'Jira', sub:'Source of human-entered status', pill:'On Track', pillColor:'green',
+          rows:[['Status','Green','good'],['Last update','12 days ago',''],['Updated by','M. Chen',''],['Sprint velocity','−22%','bad'],['Open blockers','2 critical','bad'],['Tickets / sprint','14 → 11','']] },
+        { src:'NetSuite', sub:'Source of truth: financials', pill:'Over-burn', pillColor:'red',
+          rows:[['Budget allocated','$1.2M',''],['Budget spent','$960K · 80%','bad'],['Work complete','60%','bad'],['Burn variance','+20pts','bad'],['Forecast EAC','$1.6M','bad'],['Cost overrun','$400K projected','bad']] },
+        { src:'GitHub + Slack', sub:'Source of truth: execution', pill:'Slowing', pillColor:'amber',
+          rows:[['Commits / week','42 → 28','bad'],['PRs merged','−35%','bad'],['Open PRs (stale)','7','bad'],['Slack #atlas msgs','+2.1× (escalation)',''],['"Blocked" mentions','14 last week','bad'],['Engineer churn','1 of 6','bad']] }
+      ],
+      timeline: [
+        { sev:'info', when:'14d ago', title:'Baseline established.', body:'Project Atlas synced into canonical schema. Initial health score: B+.', meta:'5,400 records ingested · 23 fields mapped' },
+        { sev:'warn', when:'9d ago', title:'First anomaly detected.', body:'NetSuite weekly sync flagged budget burn rate exceeding velocity-adjusted forecast by 12 points.', meta:'Threshold: 10% · Action: monitoring' },
+        { sev:'warn', when:'6d ago', title:'Pattern reinforced.', body:'GitHub commit velocity dropped 18% across the Atlas repo. Slack #atlas channel showed 2.1× increase in escalation language.', meta:'Cross-correlation confidence: 76%' },
+        { sev:'bad', when:'2d ago', title:'Conflict crystallized.', body:'Burn variance crossed 18 points. Velocity decline confirmed for second consecutive sprint. Two critical blockers logged in Jira but project status remained "Green".', meta:'Confidence: 92% · Severity: Critical' },
+        { sev:'bad', when:'Just now', title:'Alert surfaced for human review.', body:'AegenSynq routed the conflict to the project owner and the PMO lead with full evidence trail.', meta:'Awaiting human override decision' }
+      ]
+    },
 
     answers: [
       {
@@ -7554,27 +7511,28 @@ function renderSidebar(t){
 
 function renderOverview(t){
   document.getElementById('ovSub').innerHTML = t.ovSub;
-  document.getElementById('ovInsights').innerHTML = t.insights.map((i, idx) => `
-    <div class="icard show ${i.sev}" id="ic${idx+1}">
-      <div class="ic-tag">${i.tag}</div>
-      <div class="ic-body">
-        ${i.body.replace(i.title.replace(/[.…]+$/,''), '<strong>'+i.title+'</strong>')}
-        <div class="src">${i.sources.map(s => `<span>${s}</span>`).join('')}</div>
-      </div>
-      <button class="ic-act">${i.action}</button>
-    </div>
-  `).join('');
-  // Reset insights with title properly inserted
-  document.getElementById('ovInsights').innerHTML = t.insights.map((i, idx) => `
-    <div class="icard show ${i.sev}" id="ic${idx+1}">
+  // Build insight cards. The critical-severity card becomes clickable
+  // if the current customer profile has a conflict investigation view
+  // defined (Northwind: Atlas, Meridian: Aurora). Others are visual only.
+  const hasConflict = !!t.conflict;
+  document.getElementById('ovInsights').innerHTML = t.insights.map((i, idx) => {
+    const isClickable = hasConflict && i.sev === 'critical';
+    const clickAttrs = isClickable
+      ? `onclick="goView('conflict')" style="cursor:pointer;"`
+      : '';
+    const actionBtn = isClickable
+      ? `<button class="ic-act" onclick="event.stopPropagation();goView('conflict')">${i.action}</button>`
+      : `<button class="ic-act">${i.action}</button>`;
+    return `
+    <div class="icard show ${i.sev}" id="ic${idx+1}" ${clickAttrs}>
       <div class="ic-tag">${i.tag}</div>
       <div class="ic-body">
         <strong>${i.title}</strong> ${i.body}
         <div class="src">${i.sources.map(s => `<span>${s}</span>`).join('')}</div>
       </div>
-      <button class="ic-act">${i.action}</button>
-    </div>
-  `).join('');
+      ${actionBtn}
+    </div>`;
+  }).join('');
 }
 
 function renderDecisions(t){
@@ -7634,6 +7592,34 @@ function renderDecisions(t){
       </div>
     `).join('')}
   `;
+}
+
+function renderConflict(t){
+  if (!t.conflict) return;
+  const c = t.conflict;
+  document.getElementById('confTitle').textContent = c.title;
+  document.getElementById('confSub').innerHTML = c.subtitle;
+  document.getElementById('confVerdictH').innerHTML = c.verdictH;
+  document.getElementById('confVerdictP').innerHTML = c.verdictP;
+  document.getElementById('confVerdictActions').innerHTML = c.actions.map(a =>
+    `<button class="btn ${a.primary ? 'btn-pri' : 'btn-ghost'}" onclick="demoNote('${a.note.replace(/'/g,"\\'")}')">${a.label}</button>`
+  ).join('');
+  document.getElementById('confEvidence').innerHTML = c.evidence.map(col => `
+    <div class="ev-col">
+      <div class="ev-head">
+        <div class="src">${col.src} <small>${col.sub}</small></div>
+        <div class="pill ${col.pillColor}">${col.pill}</div>
+      </div>
+      <div class="ev-body">
+        ${col.rows.map(r => `<div class="ev-row"><span class="k">${r[0]}</span><span class="v ${r[2]||''}">${r[1]}</span></div>`).join('')}
+      </div>
+    </div>`).join('');
+  document.getElementById('confEvidence').style.gridTemplateColumns = `repeat(${c.evidence.length},1fr)`;
+  document.getElementById('confTimeline').innerHTML = c.timeline.map(e => `
+    <div class="tl-event ${e.sev}">
+      <div class="when">${e.when}</div><div class="dot"></div>
+      <div class="what"><b>${e.title}</b> ${e.body}<small>${e.meta}</small></div>
+    </div>`).join('');
 }
 
 function renderIntel(t){
@@ -7902,6 +7888,7 @@ function applyTenant(key){
   renderAnswers(t);
   renderDecisions(t);
   renderIntel(t);
+  renderConflict(t);
   renderActivity(t);
   renderSchema(t);
   renderSavings(t);
