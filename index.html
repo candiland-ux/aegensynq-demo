@@ -2018,6 +2018,30 @@ body{
 }
 .dx-secondary button:hover{color:var(--text-2);}
 
+/* "Send to owner" is a secondary action that defers the decision to the
+   system-of-record owner; styled as a subtle button next to Skip. */
+.dx-send-owner{
+  font-family:var(--fm) !important;
+  font-size:9px !important;
+  color:var(--cobalt-bright) !important;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+.dx-send-owner:hover{color:var(--cobalt-bright) !important;opacity:0.8;}
+
+/* Owner-of-record line · sits below the action buttons so the admin always
+   sees who will see the outcome land in their system of record. */
+.dx-owner-line{
+  font-family:var(--fm);
+  font-size:10px;
+  color:var(--text-4);
+  letter-spacing:0.04em;
+  margin-top:8px;
+  text-align:right;
+  font-style:italic;
+}
+.dx-owner-line b{color:var(--text-3);font-weight:500;font-style:normal;}
+
 .dx-detail{
   display:none;
   padding:0 22px 20px 76px;
@@ -6484,6 +6508,22 @@ function toggleDetail(btn){
   btn.textContent = detail.classList.contains('open') ? 'Hide evidence' : 'Show evidence';
 }
 
+// === GOVERNANCE FLOW ===
+// The mission-control admin is the single decision-maker. They either approve
+// in place (and the owner sees the outcome in their system of record) or send
+// the decision back to the owner to handle in their own tool. Either path
+// notifies the owner of record — they never need an AegenSynq seat.
+function approveDecision(btn){
+  const card = btn.closest('.dx');
+  const owner = card.dataset.owner || 'the owner of record';
+  demoNote(`Approved. Action commits to source systems. ${owner} will see the outcome land in their system of record. Logged to immutable audit trail.`);
+}
+function sendToOwner(btn){
+  const card = btn.closest('.dx');
+  const owner = card.dataset.owner || 'the owner of record';
+  demoNote(`Sent to ${owner} for decision in their system of record. Mission control will see the result when they act on it. No AegenSynq seat required for the owner.`);
+}
+
 // === TENANT DATA ===
 const TENANTS = {
 
@@ -6549,7 +6589,7 @@ const TENANTS = {
       lastReviewed: 'Maya Chen, 6 days ago',
       total: 12, critical: 1, attention: 3, routine: 8,
       items: [
-        { sev:'critical', icon:'!',
+        { sev:'critical', icon:'!', owner:'Maya Chen (Atlas owner, Jira)',
           question:'Should we update Project Atlas\'s status from <em>"On Track"</em> to <em>"At Risk"</em>?',
           context:'Three systems strongly disagree with the manually-entered status. <b>AegenSynq is 92% confident</b> the project is at risk.',
           metas:['30 sec to review','Recommended: Approve','Audit-logged'],
@@ -6560,7 +6600,7 @@ const TENANTS = {
             {src:'NetSuite (financials)', val:'80% of budget spent on 60% of work · $400K projected overrun'},
             {src:'GitHub + Slack', val:'Velocity down 22% · 14 "blocked" mentions · 7 stale PRs'}
           ]},
-        { sev:'routine', icon:'✓',
+        { sev:'routine', icon:'✓', owner:'Salesforce CRM admin (system of record)',
           question:'Should we merge <em>1,247 duplicate contacts</em> we found across Salesforce, Jira, and Slack?',
           context:'These look like the same people listed under slightly different names in different tools. <b>1,224 are above 94% confidence</b> — a routine cleanup. 23 edge cases need a human eye.',
           metas:['1 minute to review','Bulk approve · 1,224 records','Audit-logged'],
@@ -6571,7 +6611,7 @@ const TENANTS = {
             {src:'Sample match #2', val:'"M. Rodriguez" (Jira) ↔ "Maria Rodriguez" (SF) ↔ mrodriguez (Slack) · 96%'},
             {src:'Methodology', val:'Entity resolution by email + name + project context + time period'}
           ]},
-        { sev:'attention', icon:'?',
+        { sev:'attention', icon:'?', owner:'Phoenix, Helios, Beacon owners (notified in parallel)',
           question:'Should we realign 3 projects flagged as off-strategy after the Q2 pivot?',
           context:'Phoenix, Helios, and Beacon together use 11% of engineering capacity but don\'t map to the new Q2 OKRs from the March 4 exec offsite. <b>Recommended: pause Phoenix, accelerate Helios, fast-review Beacon.</b>',
           metas:['2 minutes to review','Cascade plan generated','Notifies 3 owners'],
@@ -6895,7 +6935,7 @@ const TENANTS = {
       lastReviewed: 'Sarah Mendez (PMO Director), 4 days ago',
       total: 47, critical: 2, attention: 13, routine: 32,
       items: [
-        { sev:'critical', icon:'!',
+        { sev:'critical', icon:'!', owner:'VP-East (Aurora exec sponsor)',
           question:'Should we override Project Aurora\'s status from <em>"Green"</em> to <em>"At Risk"</em>?',
           context:'Aurora is BU-East\'s flagship Q2 launch. Three independent systems show it\'s in serious trouble. <b>92% confidence</b> the executive status report is wrong.',
           metas:['1 minute to review','Recommended: Approve','Notifies VP-East + CFO + CRO'],
@@ -6907,7 +6947,7 @@ const TENANTS = {
             {src:'ServiceNow', val:'8 critical incidents tied to Aurora · 14-day cluster'},
             {src:'GitHub', val:'Aurora repo velocity −41% over 3 sprints'}
           ]},
-        { sev:'attention', icon:'$',
+        { sev:'attention', icon:'$', owner:'Enterprise Procurement (Coupa)',
           question:'Should we consolidate 5 separate Datadog contracts into 1 enterprise agreement?',
           context:'4 BUs each negotiated their own Datadog contract. <b>Consolidating saves $340K/year</b> at the enterprise tier. Procurement has the negotiation framework ready.',
           metas:['5 minutes to review','$340K/yr savings','Procurement-led'],
@@ -6920,7 +6960,7 @@ const TENANTS = {
             {src:'BU-Henderson', val:'$71K/yr · renews 2026-08-01'},
             {src:'BU-EU', val:'$58K/yr · renews 2026-07-12'}
           ]},
-        { sev:'attention', icon:'⊕',
+        { sev:'attention', icon:'⊕', owner:'Salesforce CRM admin (parent instance)',
           question:'Should we merge 12,400 contacts from Henderson\'s legacy Salesforce into the parent CRM?',
           context:'90 days post-acquisition, Henderson contacts are still siloed. <b>3,200 are duplicates of existing parent records</b> with conflicting ownership. AegenSynq has a merge plan ready.',
           metas:['10 minutes to review','M&A integration','3,200 conflicts to resolve'],
@@ -6931,7 +6971,7 @@ const TENANTS = {
             {src:'Parent CRM', val:'3,200 likely duplicates · 89% confidence'},
             {src:'Ownership rules', val:'Last-touch wins for conflicts · escalation path defined'}
           ]},
-        { sev:'attention', icon:'§',
+        { sev:'attention', icon:'§', owner:'12 project owners across 4 BUs (notified in parallel)',
           question:'Should we realign 12 projects flagged as off-strategy after the FY26 OKR pivot?',
           context:'Across 3 BUs, 12 projects consume <b>14% of total engineering capacity</b> but don\'t map to FY26 strategic goals. Recommended cascade plan affects 84 engineers.',
           metas:['8 minutes to review','Cascade plan generated','Notifies 12 owners + exec staff'],
@@ -7214,7 +7254,7 @@ const TENANTS = {
       lastReviewed: 'Dr. Patricia Ellis (Health Director), 5 days ago',
       total: 18, critical: 1, attention: 5, routine: 12,
       items: [
-        { sev:'critical', icon:'!',
+        { sev:'critical', icon:'!', owner:'Billing team lead (Tyler ERP)',
           question:'Should we auto-link 142 unbilled patient visits to Tyler ERP for invoicing?',
           context:'These patients received care but the paper intake never made it into billing. <b>$310K annualized in legitimate, lost revenue.</b> AegenSynq has matched each visit to a patient record with 96% confidence.',
           metas:['3 minutes to review','HIPAA-safe','$310K annualized'],
@@ -7226,7 +7266,7 @@ const TENANTS = {
             {src:'Billing gap', val:'Tyler ERP has zero matching invoices'},
             {src:'Confidence', val:'96% match (1 in 30 may need manual review)'}
           ]},
-        { sev:'attention', icon:'§',
+        { sev:'attention', icon:'§', owner:'Compliance Officer (HIPAA)',
           question:'Should we reconcile 4,200 patient records with conflicting HIPAA consent?',
           context:'Same patients appear in 3 systems with different consent values. <b>This is active HIPAA exposure.</b> AegenSynq recommends taking the most-restrictive consent as the canonical value (the safest interpretation under HIPAA).',
           metas:['8 minutes to review','HIPAA · sensitive','Most-restrictive wins'],
@@ -7237,7 +7277,7 @@ const TENANTS = {
             {src:'Resolution rule', val:'Most-restrictive consent wins (HIPAA-safe default)'},
             {src:'Compliance officer', val:'Will be notified with full change list'}
           ]},
-        { sev:'attention', icon:'?',
+        { sev:'attention', icon:'?', owner:'Grants Manager (HRSA reporting)',
           question:'Should we auto-fill 3,100 missing demographic fields for the HRSA Q2 grant report?',
           context:'HRSA grant deadline in 14 days. AegenSynq can fill 3,100 of the 4,200 missing fields by cross-referencing other systems. <b>The remaining 1,100 need manual collection from patients.</b>',
           metas:['5 minutes to review','Grant deadline · 14 days','Cross-source fill'],
@@ -7249,7 +7289,7 @@ const TENANTS = {
             {src:'Manual needed', val:'1,100 (26%) require patient outreach'},
             {src:'Deadline', val:'HRSA Q2 report · 14 days'}
           ]},
-        { sev:'routine', icon:'⊕',
+        { sev:'routine', icon:'⊕', owner:'Patient records team (intake)',
           question:'Should we approve 1,766 OCR\'d paper intake forms for ingestion?',
           context:'Last week\'s paper intake batch. <b>96%+ OCR confidence on all 1,766 forms.</b> Cross-referenced against existing patient records. The remaining 74 lower-confidence forms (handwritten scrawl) route for individual review.',
           metas:['2 minutes to review','OCR routine','High confidence batch'],
@@ -7272,7 +7312,7 @@ const TENANTS = {
             {src:'Age range', val:'7–14 years post-encounter'},
             {src:'Legal hold', val:'Passed · 0 records under active hold'}
           ]},
-        { sev:'routine', icon:'✓',
+        { sev:'routine', icon:'✓', owner:'Grants Manager (cross-department)',
           question:'Should we consolidate 3 separate Excel grant trackers into one canonical view?',
           context:'Three departments each maintain their own grant tracker spreadsheet with overlapping data. <b>Consolidation prevents missed deadlines and double-reporting.</b>',
           metas:['1 minute to review','One-time setup','Audit-logged'],
@@ -7511,18 +7551,17 @@ function renderSidebar(t){
 
 function renderOverview(t){
   document.getElementById('ovSub').innerHTML = t.ovSub;
-  // Build insight cards. The critical-severity card becomes clickable
-  // if the current customer profile has a conflict investigation view
-  // defined (Northwind: Atlas, Meridian: Aurora). Others are visual only.
+  // Build insight cards. Critical-severity cards route to the conflict
+  // investigation view (Northwind: Atlas, Meridian: Aurora) when the current
+  // customer profile has one defined. All other severities (Attention/Routine)
+  // route to the Decision Queue, where the matching items live in the
+  // governance review flow.
   const hasConflict = !!t.conflict;
   document.getElementById('ovInsights').innerHTML = t.insights.map((i, idx) => {
-    const isClickable = hasConflict && i.sev === 'critical';
-    const clickAttrs = isClickable
-      ? `onclick="goView('conflict')" style="cursor:pointer;"`
-      : '';
-    const actionBtn = isClickable
-      ? `<button class="ic-act" onclick="event.stopPropagation();goView('conflict')">${i.action}</button>`
-      : `<button class="ic-act">${i.action}</button>`;
+    const routesToConflict = hasConflict && i.sev === 'critical';
+    const targetView = routesToConflict ? 'conflict' : 'decisions';
+    const clickAttrs = `onclick="goView('${targetView}')" style="cursor:pointer;"`;
+    const actionBtn = `<button class="ic-act" onclick="event.stopPropagation();goView('${targetView}')">${i.action}</button>`;
     return `
     <div class="icard show ${i.sev}" id="ic${idx+1}" ${clickAttrs}>
       <div class="ic-tag">${i.tag}</div>
@@ -7557,8 +7596,20 @@ function renderDecisions(t){
       </div>
     </div>
 
-    ${d.items.map((it, idx) => `
-      <div class="dx ${it.sev}" id="dxItem${idx}">
+    ${d.items.map((it, idx) => {
+      // Owner of record is pulled from the decision item itself. For
+      // policy-level decisions (SOX archive, batch retention) there is no
+      // single owner — the mission-control admin decides directly and the
+      // "Send to owner" path is suppressed.
+      const hasOwner = !!it.owner;
+      const ownerLine = hasOwner
+        ? `<div class="dx-owner-line">Owner of record: <b>${it.owner}</b> · will see outcome in source system</div>`
+        : `<div class="dx-owner-line">Policy-level decision · no single owner</div>`;
+      const sendBtn = hasOwner
+        ? `<button class="dx-send-owner" onclick="sendToOwner(this)">Send to owner</button>`
+        : '';
+      return `
+      <div class="dx ${it.sev}" id="dxItem${idx}" data-owner="${it.owner || ''}">
         <div class="dx-row">
           <div class="dx-icon">${it.icon}</div>
           <div class="dx-content">
@@ -7567,11 +7618,13 @@ function renderDecisions(t){
             <div class="dx-meta">${it.metas.map(m => `<span>${m}</span>`).join('')}</div>
           </div>
           <div class="dx-actions">
-            <button class="dx-approve">${it.sev === 'routine' ? '✓ Approve' : 'Approve'}</button>
+            <button class="dx-approve" onclick="approveDecision(this)">${it.sev === 'routine' ? '✓ Approve' : 'Approve'}</button>
             <div class="dx-secondary">
               <button onclick="toggleDetail(this)">Show evidence</button>
+              ${sendBtn}
               <button>Skip</button>
             </div>
+            ${ownerLine}
           </div>
         </div>
         <div class="dx-detail">
@@ -7590,7 +7643,7 @@ function renderDecisions(t){
           </div>
         </div>
       </div>
-    `).join('')}
+    `;}).join('')}
   `;
 }
 
